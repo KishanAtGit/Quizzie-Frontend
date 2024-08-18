@@ -1,13 +1,37 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function SignUp({ handleLoginType }) {
+export default function SignUp({ setLoginType, registerUser, loginType }) {
+  setLoginType("sign-up");
+
   const [signUpData, setSignUpData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  (() => {
+    if (
+      signUpData.name !== "" &&
+      signUpData.email !== "" &&
+      signUpData.password !== "" &&
+      signUpData.confirmPassword !== ""
+    ) {
+      setLoginType("log-in");
+      console.log(loginType);
+    } else {
+      setLoginType("sign-up");
+      console.log(loginType);
+    }
+  })();
+
+  const handleSubmit = () => {
+    registerUser(signUpData);
+    // if (data.status === 200) {
+    //   setLoginType("log-in");
+    // }
+  };
 
   const handleChange = e => {
     setSignUpData(prev => ({
@@ -53,9 +77,11 @@ export default function SignUp({ handleLoginType }) {
             />
           </div>
         </div>
-        <Link to='/log-in' onClick={() => handleLoginType("log-in")}>
+        <Link to={`${loginType == "log-in" ? "/log-in" : ""}`}>
           <div className='submit-button'>
-            <button type='submit'>Sign-Up</button>
+            <button type='submit' onClick={handleSubmit}>
+              Sign-Up
+            </button>
           </div>
         </Link>
       </form>

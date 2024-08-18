@@ -1,15 +1,30 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import SignIn from "./components/sign-up";
+import axios from "axios";
+import SignUp from "./components/sign-up";
 import LogIn from "./components/log-in";
 
 import "./App.css";
 
 export default function App() {
   const [loginType, setLoginType] = useState("sign-up");
+  console.log(loginType);
 
-  const handleLoginType = type => {
-    setLoginType(type);
+  // const handleLoginType = type => {
+  //   setLoginType(type);
+  // };
+
+  //User Registration API
+  const registerUser = async signUpData => {
+    try {
+      await axios.post("http://localhost:3000/api/auth/register", signUpData);
+      // if (data.status === 200) {
+      //   setLoginType("log-in");
+      // }
+      // return data;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -18,7 +33,6 @@ export default function App() {
         <div id='heading'>QUIZZIE</div>
         <div className='routes'>
           <Link
-            onClick={() => handleLoginType("sign-up")}
             id='sign-up'
             to='/sign-up'
             style={{
@@ -30,7 +44,6 @@ export default function App() {
             Sign Up
           </Link>
           <Link
-            onClick={() => handleLoginType("log-in")}
             to='/log-in'
             style={{
               boxShadow: `${
@@ -44,13 +57,20 @@ export default function App() {
         <Routes>
           <Route
             path='/'
-            element={<SignIn handleLoginType={handleLoginType} />}
+            element={
+              <SignUp setLoginType={setLoginType} registerUser={registerUser} />
+            }
           />
           <Route
             path='/sign-up'
-            element={<SignIn handleLoginType={handleLoginType} />}
+            element={
+              <SignUp setLoginType={setLoginType} registerUser={registerUser} />
+            }
           />
-          <Route path='/log-in' element={<LogIn />} />
+          <Route
+            path='/log-in'
+            element={<LogIn setLoginType={setLoginType} />}
+          />
         </Routes>
       </div>
     </BrowserRouter>
