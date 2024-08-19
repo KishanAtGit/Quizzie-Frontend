@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-export default function LogIn({ setLoginType }) {
-  setLoginType("log-in");
+export default function LogIn() {
   const [logInData, setLogInData] = useState({
     email: "",
     password: "",

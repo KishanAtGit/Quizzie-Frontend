@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../../api";
 
-export default function SignUp({ setLoginType, registerUser, loginType }) {
-  setLoginType("sign-up");
+export default function SignUp() {
+  const navigate = useNavigate();
 
   const [signUpData, setSignUpData] = useState({
     name: "",
@@ -11,26 +12,12 @@ export default function SignUp({ setLoginType, registerUser, loginType }) {
     confirmPassword: "",
   });
 
-  (() => {
-    if (
-      signUpData.name !== "" &&
-      signUpData.email !== "" &&
-      signUpData.password !== "" &&
-      signUpData.confirmPassword !== ""
-    ) {
-      setLoginType("log-in");
-      console.log(loginType);
-    } else {
-      setLoginType("sign-up");
-      console.log(loginType);
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const data = await registerUser(signUpData);
+    if (data.status === 200) {
+      navigate("/log-in");
     }
-  })();
-
-  const handleSubmit = () => {
-    registerUser(signUpData);
-    // if (data.status === 200) {
-    //   setLoginType("log-in");
-    // }
   };
 
   const handleChange = e => {
@@ -77,13 +64,13 @@ export default function SignUp({ setLoginType, registerUser, loginType }) {
             />
           </div>
         </div>
-        <Link to={`${loginType == "log-in" ? "/log-in" : ""}`}>
-          <div className='submit-button'>
-            <button type='submit' onClick={handleSubmit}>
-              Sign-Up
-            </button>
-          </div>
-        </Link>
+        {/* <Link to={`${loginType == "log-in" ? "/log-in" : ""}`}> */}
+        <div className='submit-button'>
+          <button type='submit' onClick={handleSubmit}>
+            Sign-Up
+          </button>
+        </div>
+        {/* </Link> */}
       </form>
     </div>
   );
