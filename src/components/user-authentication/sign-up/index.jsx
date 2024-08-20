@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../../api";
+import { registerUser } from "../../../services/services.api.user";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function SignUp() {
   const handleSubmit = async e => {
     e.preventDefault();
     const data = await registerUser(signUpData);
-    if (data.status === 200) {
+    if (data.status === 201) {
       navigate("/log-in");
     }
   };
@@ -64,13 +64,11 @@ export default function SignUp() {
             />
           </div>
         </div>
-        {/* <Link to={`${loginType == "log-in" ? "/log-in" : ""}`}> */}
         <div className='submit-button'>
           <button type='submit' onClick={handleSubmit}>
             Sign-Up
           </button>
         </div>
-        {/* </Link> */}
       </form>
     </div>
   );

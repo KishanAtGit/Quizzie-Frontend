@@ -1,0 +1,45 @@
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboards {
+  display: flex;
+  gap: 2ch;
+  justify-content: space-between;
+  margin: 10vh 10vw 7vh 10vw;
+}
+.dashboards > div {
+  background-color: white;
+  border-radius: 5px;
+  height: 14vh;
+  width: 15vw;
+  text-align: center;
+  padding: 2em;
+}
+
+.quizs {
+  display: flex;
+  flex-direction: column;
+  margin: 0 11vw;
+}
+
+#quizs-section-heading {
+  font-size: 3em;
+}
+
+.display-quizs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 7ch;
+  padding: 1em;
+  margin-top: 2vh;
+}
+
+.quiz {
+  background-color: white;
+  width: 11vw;
+  height: 8vh;
+  border-radius: 5px;
+  padding: 1em;
+}

@@ -5,25 +5,42 @@
 }
 
 .left-menus {
-  width: 20vw;
+  background-color: #ffffff;
+  width: 11vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 1em;
+  box-shadow: 0px 0px 7px 1px #00000040;
 }
-
 #heading {
-  font-size: 5em;
+  font-size: 7em;
   font-family: Jomhuria;
 }
 
 .menus {
   display: flex;
   flex-direction: column;
-  gap: 2ch;
+  gap: 4ch;
+  font-size: 1.8em;
+}
+.menus > div {
+  cursor: pointer;
 }
 
-#footer {
-  font-size: 3em;
+.menus > a > div {
+  padding: 0 1em;
+  border-radius: 0.3em;
+}
+
+#left-footer {
+  font-size: 1.7em;
+  border-top: 2px solid #000000;
+  padding: 0.6em;
+  cursor: pointer;
+}
+
+.right-display-space {
+  width: 89vw;
 }

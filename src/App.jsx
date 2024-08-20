@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { registerUser } from "./api";
 import UserAuthentication from "./components/user-authentication";
 import HomePage from "./components/home-page";
 
@@ -9,11 +8,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
+        {/* <Route
           path='*'
-          element={<UserAuthentication registerUser={registerUser} />}
-        />
-        <Route path='/home-page' element={<HomePage />} />
+          element={<div className='page-not-found'>Page Not Found!</div>}
+        /> */}
+        <Route path='*' element={<UserAuthentication />} />
+        <Route path='/home-page/*' element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../../services/services.api.user";
 
 export default function LogIn() {
+  const navigate = useNavigate();
+
   const [logInData, setLogInData] = useState({
     email: "",
     password: "",
   });
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const data = await loginUser(logInData);
+    if (data.status === 202) {
+      navigate("/home-page");
+    }
+  };
 
   const handleChange = e => {
     setLogInData(prev => ({
@@ -37,7 +49,9 @@ export default function LogIn() {
           </div>
         </div>
         <div className='submit-button' id='submit-button-login'>
-          <button type='submit'>Log In</button>
+          <button type='submit' onClick={handleSubmit}>
+            Log In
+          </button>
         </div>
       </form>
     </div>
