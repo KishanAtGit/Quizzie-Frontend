@@ -1,0 +1,70 @@
+.question-wise-analysis {
+  display: grid;
+  margin: 6vh 5vw;
+}
+
+.quiz-creation {
+  display: grid;
+  position: fixed;
+  top: 2vh;
+  right: 5vw;
+  color: #ff5d01;
+  font-size: 1.3em;
+}
+
+#question-wise-analysis-heading {
+  font-size: 3.2em;
+  color: #5076ff;
+}
+
+.questions {
+  display: grid;
+  margin-top: 3vh;
+  height: 82vh;
+  overflow-y: scroll;
+}
+.questions::-webkit-scrollbar {
+  display: none;
+}
+
+.question {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  margin: 4vh 2vw;
+}
+.question:not(:last-child) {
+  border-bottom: 2px solid #d7d7d7;
+  padding-bottom: 5vh;
+}
+
+.question-name {
+  font-size: 2.8em;
+  color: #000000;
+  font-weight: 500;
+}
+
+.question-analysis {
+  display: flex;
+  justify-content: space-between;
+  width: 60vw;
+}
+.question-analysis > div {
+  padding: 1em;
+  background-color: white;
+  width: 13vw;
+  height: 12vh;
+  border-radius: 5px;
+  text-align: center;
+  display: grid;
+}
+.question-analysis > div > span {
+  margin: auto;
+}
+.question-analysis > div > span:nth-child(2) {
+  font-size: 1.2em;
+}
+
+.responses {
+  font-size: 3.9em;
+}
