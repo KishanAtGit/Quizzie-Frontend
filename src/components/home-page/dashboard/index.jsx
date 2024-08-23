@@ -1,6 +1,8 @@
 import "./index.css";
 
-export default function Dashboard({ tempEntry }) {
+export default function Dashboard({ quizs }) {
+  // console.log(quizs);
+
   return (
     <div className='dashboard-page'>
       <div className='dashboards'>
@@ -11,10 +13,10 @@ export default function Dashboard({ tempEntry }) {
       <div className='quizs'>
         <div id='quizs-section-heading'>Trending Quizs</div>
         <div className='display-quizs'>
-          {tempEntry.map((quiz, index) => {
+          {quizs.map((quiz, index) => {
             return (
               <div className='quiz' key={index}>
-                {quiz}
+                {quiz.quizName}
               </div>
             );
           })}

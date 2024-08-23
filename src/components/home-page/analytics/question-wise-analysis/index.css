@@ -53,7 +53,7 @@
   padding: 1em;
   background-color: white;
   width: 13vw;
-  height: 12vh;
+  height: 13vh;
   border-radius: 5px;
   text-align: center;
   display: grid;
@@ -67,4 +67,10 @@
 
 .responses {
   font-size: 3.9em;
+}
+
+.question-analysis-poll > div {
+  display: flex;
+  width: 10vw;
+  height: 8vh;
 }
