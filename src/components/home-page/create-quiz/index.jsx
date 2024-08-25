@@ -82,7 +82,7 @@ export function CreateQAndAQuestion({
   openCreateQAndAModal,
   setOpenCreateQAndAModal,
 }) {
-  const [questionNumbers, setQuestionNumber] = useState(["1", "2", "+"]);
+  const [questionNumbers, setQuestionNumber] = useState(["1", "+"]);
   const [questions, setQuestions] = useState([
     {
       questionText: "",
@@ -92,8 +92,16 @@ export function CreateQAndAQuestion({
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
 
   const handleSelection = question => {
+    console.log(question, "question");
+
     if (question == "+") {
-      return;
+      // return;
+      setQuestionNumber(prev => [
+        ...prev.slice(0, prev.length - 1),
+        prev.length,
+        ...prev.slice(prev.length - 1),
+      ]);
+      setQuestions(prev => [...prev, { questionText: "" }]);
     } else {
       setSelectedQustionNumber(Number(question));
     }

@@ -6,30 +6,46 @@ export default function QAndAType({
   setQuestions,
   selectedQustionNumber,
 }) {
-  //   console.log(question);
+  console.log(question, "aaaaa");
   const [formData, setFormData] = useState({
     questionText: "",
   });
 
   useEffect(() => {
-    let tempSelectedQustionNumber = selectedQustionNumber;
-    setFormData(question);
-    // console.log(tempSelectedQustionNumber);
+    setFormData({
+      questionText: "",
+    });
+  }, [selectedQustionNumber]);
 
-    return () => {
-      console.log(tempSelectedQustionNumber, "unmount");
-      setQuestions(prev => [
-        ...prev,
-        (prev[tempSelectedQustionNumber] = formData),
-      ]);
-    };
-  }, []);
-  console.log(question, formData);
+  // useEffect(() => {
+  //   let tempSelectedQustionNumber = selectedQustionNumber;
+  //   setFormData(question);
+  //   // console.log(tempSelectedQustionNumber);
+
+  //   return () => {
+  //     console.log(tempSelectedQustionNumber, "unmount");
+  //     setQuestions(prev => [
+  //       ...prev,
+  //       (prev[tempSelectedQustionNumber] = formData),
+  //     ]);
+  //   };
+  // }, []);
+  console.log(question, "question");
 
   const handleInput = e => {
+    console.log(e.target.id, e.target.value, "scsc");
     setFormData(prev => {
       return { ...prev, [e.target.id]: e.target.value };
     });
+
+    setQuestions(prevItems =>
+      prevItems.map(
+        (item, index) =>
+          index === selectedQustionNumber
+            ? { ...item, [e.target.id]: e.target.value } // Update the matching item
+            : item // Keep other items unchanged
+      )
+    );
   };
 
   return (
@@ -39,7 +55,11 @@ export default function QAndAType({
           id='questionText'
           type='text'
           placeholder='Q & A Quiestion'
-          value={formData.questionText}
+          value={
+            question.questionText === ""
+              ? formData.questionText
+              : question.questionText
+          }
           onChange={e => handleInput(e)}
         />
       </div>
