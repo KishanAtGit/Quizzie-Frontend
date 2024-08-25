@@ -6,7 +6,6 @@ export default function QAndAType({
   setQuestions,
   selectedQustionNumber,
 }) {
-  console.log(question, "aaaaa");
   const [formData, setFormData] = useState({
     questionText: "",
   });
@@ -17,23 +16,8 @@ export default function QAndAType({
     });
   }, [selectedQustionNumber]);
 
-  // useEffect(() => {
-  //   let tempSelectedQustionNumber = selectedQustionNumber;
-  //   setFormData(question);
-  //   // console.log(tempSelectedQustionNumber);
-
-  //   return () => {
-  //     console.log(tempSelectedQustionNumber, "unmount");
-  //     setQuestions(prev => [
-  //       ...prev,
-  //       (prev[tempSelectedQustionNumber] = formData),
-  //     ]);
-  //   };
-  // }, []);
-  console.log(question, "question");
-
   const handleInput = e => {
-    console.log(e.target.id, e.target.value, "scsc");
+    // console.log(e.target.id, e.target.value, "scsc");
     setFormData(prev => {
       return { ...prev, [e.target.id]: e.target.value };
     });

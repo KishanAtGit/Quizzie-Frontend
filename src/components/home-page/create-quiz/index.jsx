@@ -1,6 +1,7 @@
 import Modal from "react-modal";
 import { useState } from "react";
 import QAndAType from "./qAndAType";
+import x from "../../../assets/img/charm_cross.png";
 import "./index.css";
 
 export function CreateQuizType({
@@ -82,7 +83,7 @@ export function CreateQAndAQuestion({
   openCreateQAndAModal,
   setOpenCreateQAndAModal,
 }) {
-  const [questionNumbers, setQuestionNumber] = useState(["1", "+"]);
+  const [questionNumbers, setQuestionNumbers] = useState(["1"]);
   const [questions, setQuestions] = useState([
     {
       questionText: "",
@@ -95,22 +96,26 @@ export function CreateQAndAQuestion({
     console.log(question, "question");
 
     if (question == "+") {
-      // return;
-      setQuestionNumber(prev => [
-        ...prev.slice(0, prev.length - 1),
-        prev.length,
-        ...prev.slice(prev.length - 1),
-      ]);
+      const nextNumber = (
+        Number(questionNumbers[questionNumbers.length - 1]) + 1
+      ).toString();
+      setQuestionNumbers(prev => [...prev, nextNumber]);
       setQuestions(prev => [...prev, { questionText: "" }]);
     } else {
       setSelectedQustionNumber(Number(question));
     }
-    // } else if (Number(question) == 1) {
-    // setSelectedQustionNumber(Number(question));
-    // } else if (Number(question) >= 2) {
-    //   setSelectedQustionNumber(Number(question));
-    //   setQuestions(prev => [...prev, { questionText: "" }]);
-    // }
+  };
+
+  const handleQuestionDeletion = index => {
+    setQuestions(prev => prev.filter((_, i) => i !== index));
+
+    const newNumbers = [...questionNumbers];
+    newNumbers.splice(index, 1);
+    console.log("Array after removal:", newNumbers);
+    // Reorder question numbers
+    const reorderedNumbers = newNumbers.map((_, i) => (i + 1).toString());
+    // Update the state with the new array of question numbers
+    setQuestionNumbers(reorderedNumbers);
   };
 
   return (
@@ -126,9 +131,17 @@ export function CreateQAndAQuestion({
             return (
               <div key={index} onClick={() => handleSelection(question)}>
                 {question}
+                <img
+                  src={x}
+                  alt='crossButton'
+                  onClick={() => handleQuestionDeletion(index)}
+                />
               </div>
             );
           })}
+          {questionNumbers.length < 5 && (
+            <div onClick={() => handleSelection("+")}>+</div>
+          )}
         </div>
         <QAndAType
           selectedQustionNumber={selectedQustionNumber - 1}
