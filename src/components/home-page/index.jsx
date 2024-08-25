@@ -7,6 +7,7 @@ import {
   CreateQuizType,
   CreateQAndAQuestion,
   CreatePollQuestion,
+  QuizLinkModal,
 } from "./create-quiz";
 
 import "./index.css";
@@ -17,6 +18,7 @@ export default function HomePage() {
   const [openCreateQuizTypeModal, setOpenCreateQuizTypeModal] = useState(false);
   const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
   const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
+  const [openQuizLinkModal, setOpenQuizLinkModal] = useState(false);
 
   const [tempEntry, setTempEntry] = useState([
     1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 5, 9,
@@ -283,7 +285,7 @@ export default function HomePage() {
       ],
     },
   ]);
-  console.log(quizs);
+  // console.log(quizs);
 
   return (
     <div className='home-page'>
@@ -352,26 +354,32 @@ export default function HomePage() {
           />
         </Routes>
       </div>
-      {openCreateQuizTypeModal && (
-        <CreateQuizType
-          openCreateQuizTypeModal={openCreateQuizTypeModal}
-          setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
-          setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-          setOpenCreatePollModal={setOpenCreatePollModal}
-        />
-      )}
-      {openCreateQAndAModal && (
-        <CreateQAndAQuestion
-          openCreateQAndAModal={openCreateQAndAModal}
-          setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-        />
-      )}
-      {openCreatePollModal && (
-        <CreatePollQuestion
-          openCreatePollModal={openCreatePollModal}
-          setOpenCreatePollModal={setOpenCreatePollModal}
-        />
-      )}
+      {/* {openCreateQuizTypeModal && ( */}
+      <CreateQuizType
+        openCreateQuizTypeModal={openCreateQuizTypeModal}
+        setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
+        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+        setOpenCreatePollModal={setOpenCreatePollModal}
+      />
+      {/* )} */}
+      {/* {openCreateQAndAModal && ( */}
+      <CreateQAndAQuestion
+        openCreateQAndAModal={openCreateQAndAModal}
+        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+      />
+      {/* )} */}
+      {/* {openCreatePollModal && ( */}
+      <CreatePollQuestion
+        openCreatePollModal={openCreatePollModal}
+        setOpenCreatePollModal={setOpenCreatePollModal}
+      />
+      {/* )} */}
+      {/* {openQuizLinkModal && ( */}
+      <QuizLinkModal
+        openQuizLinkModal={openQuizLinkModal}
+        setOpenQuizLinkModal={setOpenQuizLinkModal}
+      />
+      {/* )} */}
     </div>
   );
 }

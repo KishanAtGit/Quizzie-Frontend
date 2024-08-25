@@ -1,6 +1,7 @@
 import Modal from "react-modal";
-import "./index.css";
 import { useState } from "react";
+import QAndAType from "./qAndAType";
+import "./index.css";
 
 export function CreateQuizType({
   openCreateQuizTypeModal,
@@ -11,31 +12,37 @@ export function CreateQuizType({
   // const [quizType, setQuizType] = useState("");
   const [createQuizTypeAndName, setCreateQuizTypeAndName] = useState({
     quizName: "",
-    QuizType: "",
+    quizType: "",
   });
+  // console.log(createQuizTypeAndName.quizName, createQuizTypeAndName.quizType);
 
   const handleInput = e => {
-    if (typeof e === String) {
-      console.log(e);
-
+    if (typeof e === "string") {
+      // document.getElementById(e).style.cssText = `
+      //   background-color: #60b84b; color: white;
+      // `;
       setCreateQuizTypeAndName(prev => {
         return { ...prev, quizType: e };
       });
-    } else if (typeof e == {}) {
-      console.log(e);
-      setCreateQuizTypeAndName(prev => {
-        return { ...prev, [e.target.name]: e.target.value };
-      });
+    } else {
+      setCreateQuizTypeAndName(prev => ({
+        ...prev,
+        [e.target.id]: e.target.value,
+      }));
     }
   };
 
   const handleSubmit = () => {
-    if (createQuizTypeAndName.QuizTypecrea == "Q&A") {
-      setOpenCreateQAndAModal(true);
-    } else if (createQuizTypeAndName.QuizType == "Poll") {
-      setOpenCreatePollModal(true);
+    if (createQuizTypeAndName.quizType !== "") {
+      if (createQuizTypeAndName.quizType == "Q&A") {
+        // console.log("Q&A");
+        setOpenCreateQAndAModal(true);
+      } else if (createQuizTypeAndName.quizType == "Poll") {
+        // console.log("Poll");
+        setOpenCreatePollModal(true);
+      }
+      setOpenCreateQuizTypeModal(false);
     }
-    setOpenCreateQuizTypeModal(false);
   };
 
   return (
@@ -48,9 +55,10 @@ export function CreateQuizType({
       >
         <div id='modal-quiz-name'>
           <input
+            id='quizName'
             type='text'
-            value={createQuizTypeAndName.quizName}
             placeholder='Quiz Name'
+            value={createQuizTypeAndName.quizName}
             onChange={e => handleInput(e)}
           />
         </div>
@@ -60,7 +68,9 @@ export function CreateQuizType({
           <span onClick={() => handleInput("Poll")}>Poll Type</span>
         </div>
         <div className='modal-buttons'>
-          <button>Cancel</button>
+          <button onClick={() => setOpenCreateQuizTypeModal(false)}>
+            Cancel
+          </button>
           <button onClick={handleSubmit}>Continue</button>
         </div>
       </Modal>
@@ -72,15 +82,51 @@ export function CreateQAndAQuestion({
   openCreateQAndAModal,
   setOpenCreateQAndAModal,
 }) {
+  const [questionNumbers, setQuestionNumber] = useState(["1", "2", "+"]);
+  const [questions, setQuestions] = useState([
+    {
+      questionText: "",
+    },
+  ]);
+  console.log(questions);
+  const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
+
+  const handleSelection = question => {
+    if (question == "+") {
+      return;
+    } else {
+      setSelectedQustionNumber(Number(question));
+    }
+    // } else if (Number(question) == 1) {
+    // setSelectedQustionNumber(Number(question));
+    // } else if (Number(question) >= 2) {
+    //   setSelectedQustionNumber(Number(question));
+    //   setQuestions(prev => [...prev, { questionText: "" }]);
+    // }
+  };
+
   return (
     <div>
       <Modal
-        className='modal'
+        className='QandA-modal'
         isOpen={openCreateQAndAModal}
         onRequestClose={() => setOpenCreateQAndAModal(false)}
         ariaHideApp={false}
       >
-        CreateQAndAQuestion
+        <div className='QandA-question-numbers'>
+          {questionNumbers.map((question, index) => {
+            return (
+              <div key={index} onClick={() => handleSelection(question)}>
+                {question}
+              </div>
+            );
+          })}
+        </div>
+        <QAndAType
+          selectedQustionNumber={selectedQustionNumber - 1}
+          question={questions[selectedQustionNumber - 1]}
+          setQuestions={setQuestions}
+        />
       </Modal>
     </div>
   );
@@ -101,5 +147,18 @@ export function CreatePollQuestion({
         CreatePollQuestion
       </Modal>
     </div>
+  );
+}
+
+export function QuizLinkModal({ openQuizLinkModal, setOpenQuizLinkModal }) {
+  return (
+    <Modal
+      className='quiz-link-modal'
+      isOpen={openQuizLinkModal}
+      onRequestClose={() => setOpenQuizLinkModal(false)}
+      ariaHideApp={false}
+    >
+      Quiz LInk
+    </Modal>
   );
 }
