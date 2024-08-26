@@ -11,6 +11,10 @@ export default function CreateQuiz({
   const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
   const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
   const [openQuizLinkModal, setOpenQuizLinkModal] = useState(false);
+  const [createQuizTypeAndName, setCreateQuizTypeAndName] = useState({
+    quizName: "",
+    quizType: "",
+  });
 
   return (
     <div>
@@ -19,14 +23,18 @@ export default function CreateQuiz({
         setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
         setOpenCreateQAndAModal={setOpenCreateQAndAModal}
         setOpenCreatePollModal={setOpenCreatePollModal}
+        createQuizTypeAndName={createQuizTypeAndName}
+        setCreateQuizTypeAndName={setCreateQuizTypeAndName}
       />
       <CreateQAndAQuestion
         openCreateQAndAModal={openCreateQAndAModal}
         setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+        createQuizTypeAndName={createQuizTypeAndName}
       />
       <CreatePollQuestion
         openCreatePollModal={openCreatePollModal}
         setOpenCreatePollModal={setOpenCreatePollModal}
+        createQuizTypeAndName={createQuizTypeAndName}
       />
       <QuizLinkModal
         openQuizLinkModal={openQuizLinkModal}

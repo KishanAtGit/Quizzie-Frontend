@@ -7,12 +7,9 @@ export default function CreateQuizType({
   setOpenCreateQuizTypeModal,
   setOpenCreateQAndAModal,
   setOpenCreatePollModal,
+  createQuizTypeAndName,
+  setCreateQuizTypeAndName,
 }) {
-  const [createQuizTypeAndName, setCreateQuizTypeAndName] = useState({
-    quizName: "",
-    quizType: "",
-  });
-
   const handleInput = e => {
     if (typeof e === "string") {
       setCreateQuizTypeAndName(prev => {

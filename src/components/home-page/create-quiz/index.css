@@ -102,23 +102,25 @@ input::placeholder {
   color: #9f9f9f;
 }
 
-.QandA-question-numbers {
+.question-numbers {
   display: flex;
   gap: 2vw;
 }
-.QandA-question-numbers > div {
-  font-size: 2em;
+
+.question-number {
   text-align: center;
   border-radius: 50%;
-  border: 1px solid black;
   width: 2.2vw;
+  border: 1px solid black;
   cursor: pointer;
-  position: relative;
+  font-size: 2em;
 }
-.QandA-question-numbers > div > img {
+
+.cross-icon {
   position: absolute;
   top: -5px;
-  right: -4px;
+  right: -5px;
+  cursor: pointer;
 }
 
 .display-form {
@@ -127,11 +129,11 @@ input::placeholder {
   gap: 2vh;
 }
 
-#QandA-text-box {
+#QandA-Poll-text-box {
   display: flex;
   justify-content: center;
 }
-#QandA-text-box > input {
+#QandA-Poll-text-box > input {
   width: 97%;
   height: 5vh;
   color: #9f9f9f;
@@ -166,7 +168,8 @@ input::placeholder {
   align-items: center;
 }
 
-.QandA-option-text {
+.QandA-poll-option-text,
+.QandA-poll-option-imageUrl {
   border-radius: 5px;
 }
 

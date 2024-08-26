@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import deleteIcon from "../../../../../assets/img/material-symbols_delete.png";
 
-export default function QAndAType({
+export default function PollType({
   question,
   setQuestions,
   selectedQustionNumber,
+  createQuizTypeAndName,
 }) {
   const [formData, setFormData] = useState({
     questionText: "",
@@ -70,9 +71,43 @@ export default function QAndAType({
     }));
   }, [selectedQustionNumber]);
 
+  // useEffect(() => {
+  //   setQuestions(prevItems =>
+  //     prevItems.map((item, i) =>
+  //       i === selectedQustionNumber
+  //         ? {
+  //             ...item,
+  //             options: item.options.map(option => ({
+  //               ...option,
+  //               optionText: "",
+  //               imageUrl: "",
+  //             })),
+  //           }
+  //         : item
+  //     )
+  //   );
+  // }, [formData.optionType, selectedQustionNumber, setQuestions]);
+
+  // useEffect(() => {
+  //   setQuestions(prevItems =>
+  //     prevItems.map((item, i) =>
+  //       i === selectedQustionNumber
+  //         ? {
+  //             ...item,
+  //             options: item.options.map(option => ({
+  //               ...option,
+  //               optionText: "",
+  //               imageUrl: "",
+  //             })),
+  //           }
+  //         : item
+  //     )
+  //   );
+  // }, [question.optionType]);
+
   //for option input
   const handleOptionInput = (e, index) => {
-    console.log(e);
+    console.log(e.target.className);
 
     if (e.target.name == "options-radio") {
       //for correct option selection in formData
@@ -101,29 +136,55 @@ export default function QAndAType({
         )
       );
     } else {
-      //for formData optionsText updation
-      setFormData(prev => ({
-        ...prev,
-        options: prev.options.map((option, i) =>
-          i === index ? { ...option, optionText: e.target.value } : option
-        ),
-      }));
+      if (e.target.className === "QandA-poll-option-text") {
+        //for formData optionsText updation
+        setFormData(prev => ({
+          ...prev,
+          options: prev.options.map((option, i) =>
+            i === index ? { ...option, optionText: e.target.value } : option
+          ),
+        }));
 
-      //for questionData optionsText updation
-      setQuestions(prevItems =>
-        prevItems.map((item, i) =>
-          i === selectedQustionNumber
-            ? {
-                ...item,
-                options: item.options.map((option, i) =>
-                  i === index
-                    ? { ...option, optionText: e.target.value }
-                    : option
-                ),
-              }
-            : item
-        )
-      );
+        //for questionData optionsText updation
+        setQuestions(prevItems =>
+          prevItems.map((item, i) =>
+            i === selectedQustionNumber
+              ? {
+                  ...item,
+                  options: item.options.map((option, i) =>
+                    i === index
+                      ? { ...option, optionText: e.target.value }
+                      : option
+                  ),
+                }
+              : item
+          )
+        );
+      } else {
+        //for formData optionsText updation
+        setFormData(prev => ({
+          ...prev,
+          options: prev.options.map((option, i) =>
+            i === index ? { ...option, imageUrl: e.target.value } : option
+          ),
+        }));
+
+        //for questionData optionsText updation
+        setQuestions(prevItems =>
+          prevItems.map((item, i) =>
+            i === selectedQustionNumber
+              ? {
+                  ...item,
+                  options: item.options.map((option, i) =>
+                    i === index
+                      ? { ...option, imageUrl: e.target.value }
+                      : option
+                  ),
+                }
+              : item
+          )
+        );
+      }
     }
   };
 
@@ -185,6 +246,25 @@ export default function QAndAType({
     );
   };
 
+  //radio buttons hiding for pollType
+  const setradioButtonVisibltyToNoneForPollType = () => {
+    if (createQuizTypeAndName.quizType == "Poll") {
+      return { display: "none" };
+    }
+  };
+
+  const setOptionTextBoxVisiblty = () => {
+    if (question.optionType === "imageUrl") {
+      return { display: "none" };
+    }
+  };
+
+  const setOptionImageUrlVisiblty = () => {
+    if (question.optionType === "text") {
+      return { display: "none" };
+    }
+  };
+
   //for timer Styles
   const timerStyleDiv0 = () => {
     if (question.questionText === "") {
@@ -217,10 +297,6 @@ export default function QAndAType({
   };
 
   const handleFormInput = e => {
-    // console.log(e);
-
-    //for optionText updation
-
     //for timers
     if (e.target.id == "timer-off") {
       setFormData(prev => ({ ...prev, timer: 0 }));
@@ -380,7 +456,7 @@ export default function QAndAType({
         <input
           id='questionText'
           type='text'
-          placeholder='Q & A Quiestion'
+          placeholder='Poll Question'
           value={
             question.questionText === ""
               ? formData.questionText
@@ -453,6 +529,7 @@ export default function QAndAType({
               return (
                 <div key={index}>
                   <input
+                    style={setradioButtonVisibltyToNoneForPollType()}
                     type='radio'
                     name='options-radio'
                     onChange={e => handleOptionInput(e, index)}
@@ -463,6 +540,7 @@ export default function QAndAType({
                     }
                   />
                   <input
+                    style={setOptionTextBoxVisiblty()}
                     id={`option${index + 1}`}
                     className='QandA-poll-option-text'
                     type='text'
@@ -471,6 +549,19 @@ export default function QAndAType({
                       question.questionText === ""
                         ? formData.options[index].optionText
                         : question.options[index].optionText
+                    }
+                    onChange={e => handleOptionInput(e, index)}
+                  />
+                  <input
+                    style={setOptionImageUrlVisiblty()}
+                    id={`optionImage${index + 1}`}
+                    className='QandA-poll-option-imageUrl'
+                    type='text'
+                    placeholder='Image URL'
+                    value={
+                      question.questionText === ""
+                        ? formData.options[index].imageUrl
+                        : question.options[index].imageUrl
                     }
                     onChange={e => handleOptionInput(e, index)}
                   />
@@ -492,7 +583,10 @@ export default function QAndAType({
             </div>
           )}
         </div>
-        <div className='timer'>
+        <div
+          style={setradioButtonVisibltyToNoneForPollType()}
+          className='timer'
+        >
           <div>Timer</div>
           <div
             style={timerStyleDiv0()}

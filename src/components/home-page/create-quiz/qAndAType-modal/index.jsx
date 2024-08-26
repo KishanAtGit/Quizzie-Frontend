@@ -2,11 +2,13 @@ import Modal from "react-modal";
 import { useState } from "react";
 import QAndAType from "./form";
 import x from "../../../../assets/img/charm_cross.png";
+import addIcon from "../../../../assets/img/question_add_button.png";
 import "../index.css";
 
 export default function CreateQAndAQuestion({
   openCreateQAndAModal,
   setOpenCreateQAndAModal,
+  createQuizTypeAndName,
 }) {
   const [questionNumbers, setQuestionNumbers] = useState(["1"]);
   const [questions, setQuestions] = useState([
@@ -19,6 +21,16 @@ export default function CreateQAndAQuestion({
         textAndImageType: false,
       },
       options: [
+        {
+          optionText: "",
+          imageUrl: "",
+          isCorrect: false,
+        },
+        {
+          optionText: "",
+          imageUrl: "",
+          isCorrect: false,
+        },
         {
           optionText: "",
           imageUrl: "",
@@ -56,6 +68,16 @@ export default function CreateQAndAQuestion({
               imageUrl: "",
               isCorrect: false,
             },
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
           ],
           timer: null,
         },
@@ -86,23 +108,38 @@ export default function CreateQAndAQuestion({
         onRequestClose={() => setOpenCreateQAndAModal(false)}
         ariaHideApp={false}
       >
-        <div className='QandA-question-numbers'>
+        <div className='question-numbers'>
           {questionNumbers.map((question, index) => {
             return (
-              <>
-                <div onClick={() => handleSelection(question)}>{question}</div>
+              <div
+                style={{ display: "flex", position: "relative" }}
+                key={index}
+              >
+                <div
+                  className='question-number'
+                  onClick={() => handleSelection(question)}
+                >
+                  {question}
+                </div>
                 {questions.length > 1 && (
-                  <img
-                    src={x}
-                    alt='crossButton'
-                    onClick={() => handleQuestionDeletion(index)}
-                  />
+                  <div className='cross-icon'>
+                    <img
+                      src={x}
+                      alt='crossButton'
+                      onClick={() => handleQuestionDeletion(index)}
+                    />
+                  </div>
                 )}
-              </>
+              </div>
             );
           })}
           {questionNumbers.length < 5 && (
-            <div onClick={() => handleSelection("+")}>+</div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => handleSelection("+")}
+            >
+              <img src={addIcon} alt='addIcon' />
+            </div>
           )}
         </div>
         <QAndAType
@@ -110,6 +147,10 @@ export default function CreateQAndAQuestion({
           question={questions[selectedQustionNumber - 1]}
           setQuestions={setQuestions}
         />
+        <div className='modal-buttons'>
+          <button>Cancel</button>
+          <button>Create Quiz</button>
+        </div>
       </Modal>
     </div>
   );
