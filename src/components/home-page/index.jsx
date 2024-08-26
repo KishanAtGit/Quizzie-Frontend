@@ -3,23 +3,13 @@ import { useState } from "react";
 import Dashboard from "./dashboard";
 import Analytics from "./analytics";
 import QuestionWiseAnalysis from "./analytics/question-wise-analysis";
-import {
-  CreateQuizType,
-  CreateQAndAQuestion,
-  CreatePollQuestion,
-  QuizLinkModal,
-} from "./create-quiz";
+import CreateQuiz from "./create-quiz";
 
 import "./index.css";
 
 export default function HomePage() {
   const location = useLocation();
   const [selectedQuiz, setSelectedQuiz] = useState("");
-  const [openCreateQuizTypeModal, setOpenCreateQuizTypeModal] = useState(false);
-  const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
-  const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
-  const [openQuizLinkModal, setOpenQuizLinkModal] = useState(false);
-
   const [tempEntry, setTempEntry] = useState([
     1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 5, 9,
   ]);
@@ -285,6 +275,8 @@ export default function HomePage() {
       ],
     },
   ]);
+  const [openCreateQuizTypeModal, setOpenCreateQuizTypeModal] = useState(false);
+
   // console.log(quizs);
 
   return (
@@ -320,7 +312,6 @@ export default function HomePage() {
               Analytics
             </div>
           </Link>
-          {/* <Link to={"/home-page/create-quiz"}> */}
           <div
             onClick={() => setOpenCreateQuizTypeModal(true)}
             style={{
@@ -333,7 +324,6 @@ export default function HomePage() {
           >
             Create Quiz
           </div>
-          {/* </Link> */}
         </div>
         <div id='left-footer'>LOGOUT</div>
       </div>
@@ -347,39 +337,16 @@ export default function HomePage() {
               <Analytics quizs={quizs} setSelectedQuiz={setSelectedQuiz} />
             }
           />
-          {/* <Route path='/create-quiz' element={<CreateQuiz />} /> */}
           <Route
             path='/question-wise-analysis'
             element={<QuestionWiseAnalysis quiz={quizs[selectedQuiz]} />}
           />
         </Routes>
       </div>
-      {/* {openCreateQuizTypeModal && ( */}
-      <CreateQuizType
+      <CreateQuiz
         openCreateQuizTypeModal={openCreateQuizTypeModal}
         setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
-        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-        setOpenCreatePollModal={setOpenCreatePollModal}
       />
-      {/* )} */}
-      {/* {openCreateQAndAModal && ( */}
-      <CreateQAndAQuestion
-        openCreateQAndAModal={openCreateQAndAModal}
-        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-      />
-      {/* )} */}
-      {/* {openCreatePollModal && ( */}
-      <CreatePollQuestion
-        openCreatePollModal={openCreatePollModal}
-        setOpenCreatePollModal={setOpenCreatePollModal}
-      />
-      {/* )} */}
-      {/* {openQuizLinkModal && ( */}
-      <QuizLinkModal
-        openQuizLinkModal={openQuizLinkModal}
-        setOpenQuizLinkModal={setOpenQuizLinkModal}
-      />
-      {/* )} */}
     </div>
   );
 }
