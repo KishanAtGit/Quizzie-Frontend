@@ -1,5 +1,4 @@
 import Modal from "react-modal";
-import { useState } from "react";
 import "../index.css";
 
 export default function CreateQuizType({
@@ -7,16 +6,30 @@ export default function CreateQuizType({
   setOpenCreateQuizTypeModal,
   setOpenCreateQAndAModal,
   setOpenCreatePollModal,
-  createQuizTypeAndName,
-  setCreateQuizTypeAndName,
+  createQuiz,
+  setCreateQuiz,
 }) {
+  //for quizType selecton div
+  const quizTypeDivStyleForQandA = () => {
+    if (createQuiz.quizType === "Q&A") {
+      return { backgroundColor: "#60b84b", color: "white" };
+    }
+  };
+  const quizTypeDivStyleForPoll = () => {
+    if (createQuiz.quizType === "Poll") {
+      return { backgroundColor: "#60b84b", color: "white" };
+    }
+  };
+
   const handleInput = e => {
+    //for quiz type update
     if (typeof e === "string") {
-      setCreateQuizTypeAndName(prev => {
+      setCreateQuiz(prev => {
         return { ...prev, quizType: e };
       });
     } else {
-      setCreateQuizTypeAndName(prev => ({
+      //for QuizName input
+      setCreateQuiz(prev => ({
         ...prev,
         [e.target.id]: e.target.value,
       }));
@@ -24,14 +37,14 @@ export default function CreateQuizType({
   };
 
   const handleSubmit = () => {
-    if (createQuizTypeAndName.quizType !== "") {
-      if (createQuizTypeAndName.quizType == "Q&A") {
+    if (createQuiz.quizType !== "") {
+      if (createQuiz.quizType == "Q&A") {
         setOpenCreateQAndAModal(true);
-      } else if (createQuizTypeAndName.quizType == "Poll") {
+      } else if (createQuiz.quizType == "Poll") {
         setOpenCreatePollModal(true);
       }
-      setOpenCreateQuizTypeModal(false);
     }
+    setOpenCreateQuizTypeModal(false);
   };
 
   return (
@@ -47,17 +60,32 @@ export default function CreateQuizType({
             id='quizName'
             type='text'
             placeholder='Quiz Name'
-            value={createQuizTypeAndName.quizName}
+            value={createQuiz.quizName}
             onChange={e => handleInput(e)}
           />
         </div>
         <div className='modal-quiz-type'>
           <span>Quiz Type</span>
-          <span onClick={() => handleInput("Q&A")}>Q & A</span>
-          <span onClick={() => handleInput("Poll")}>Poll Type</span>
+          <span
+            style={quizTypeDivStyleForQandA()}
+            onClick={() => handleInput("Q&A")}
+          >
+            Q & A
+          </span>
+          <span
+            style={quizTypeDivStyleForPoll()}
+            onClick={() => handleInput("Poll")}
+          >
+            Poll Type
+          </span>
         </div>
         <div className='modal-buttons'>
-          <button onClick={() => setOpenCreateQuizTypeModal(false)}>
+          <button
+            onClick={() => {
+              setOpenCreateQuizTypeModal(false); //resetting createQuiz form
+              setCreateQuiz({});
+            }}
+          >
             Cancel
           </button>
           <button onClick={handleSubmit}>Continue</button>

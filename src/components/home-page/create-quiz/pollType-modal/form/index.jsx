@@ -5,7 +5,7 @@ export default function PollType({
   question,
   setQuestions,
   selectedQustionNumber,
-  createQuizTypeAndName,
+  createQuiz,
 }) {
   const [formData, setFormData] = useState({
     questionText: "",
@@ -36,6 +36,8 @@ export default function PollType({
     imageType: false,
     textAndImageType: false,
   });
+
+  const [isOptionTypeChange, setIsOptionTypeChange] = useState(false);
 
   useEffect(() => {
     //for formData resetting on new question tab
@@ -71,39 +73,23 @@ export default function PollType({
     }));
   }, [selectedQustionNumber]);
 
-  // useEffect(() => {
-  //   setQuestions(prevItems =>
-  //     prevItems.map((item, i) =>
-  //       i === selectedQustionNumber
-  //         ? {
-  //             ...item,
-  //             options: item.options.map(option => ({
-  //               ...option,
-  //               optionText: "",
-  //               imageUrl: "",
-  //             })),
-  //           }
-  //         : item
-  //     )
-  //   );
-  // }, [formData.optionType, selectedQustionNumber, setQuestions]);
-
-  // useEffect(() => {
-  //   setQuestions(prevItems =>
-  //     prevItems.map((item, i) =>
-  //       i === selectedQustionNumber
-  //         ? {
-  //             ...item,
-  //             options: item.options.map(option => ({
-  //               ...option,
-  //               optionText: "",
-  //               imageUrl: "",
-  //             })),
-  //           }
-  //         : item
-  //     )
-  //   );
-  // }, [question.optionType]);
+  //for resetting option fileds when on option type change
+  useEffect(() => {
+    setQuestions(prevItems =>
+      prevItems.map((item, i) =>
+        i === selectedQustionNumber
+          ? {
+              ...item,
+              options: item.options.map(option => ({
+                ...option,
+                optionText: "",
+                imageUrl: "",
+              })),
+            }
+          : item
+      )
+    );
+  }, [isOptionTypeChange]);
 
   //for option input
   const handleOptionInput = (e, index) => {
@@ -248,11 +234,12 @@ export default function PollType({
 
   //radio buttons hiding for pollType
   const setradioButtonVisibltyToNoneForPollType = () => {
-    if (createQuizTypeAndName.quizType == "Poll") {
+    if (createQuiz.quizType == "Poll") {
       return { display: "none" };
     }
   };
 
+  //for option text boxes visibilty according to option type selection
   const setOptionTextBoxVisiblty = () => {
     if (question.optionType === "imageUrl") {
       return { display: "none" };
@@ -310,6 +297,7 @@ export default function PollType({
 
     //for options types radio check
     if (e.target.name == "optionType-radio") {
+      setIsOptionTypeChange(pre => !pre);
       if (e.target.id == "text-type") {
         optionTypeRadioChecked.textType = true;
         optionTypeRadioChecked.imageType = false;

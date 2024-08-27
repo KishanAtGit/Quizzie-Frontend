@@ -36,6 +36,8 @@ export default function QAndAType({
     textAndImageType: false,
   });
 
+  const [isOptionTypeChange, setIsOptionTypeChange] = useState(false);
+
   useEffect(() => {
     //for formData resetting on new question tab
     setFormData({
@@ -70,6 +72,24 @@ export default function QAndAType({
     }));
   }, [selectedQustionNumber]);
 
+  //for resetting option fileds when on option type change
+  useEffect(() => {
+    setQuestions(prevItems =>
+      prevItems.map((item, i) =>
+        i === selectedQustionNumber
+          ? {
+              ...item,
+              options: item.options.map(option => ({
+                ...option,
+                optionText: "",
+                imageUrl: "",
+              })),
+            }
+          : item
+      )
+    );
+  }, [isOptionTypeChange]);
+
   //for option input
   const handleOptionInput = (e, index) => {
     console.log(e);
@@ -101,29 +121,55 @@ export default function QAndAType({
         )
       );
     } else {
-      //for formData optionsText updation
-      setFormData(prev => ({
-        ...prev,
-        options: prev.options.map((option, i) =>
-          i === index ? { ...option, optionText: e.target.value } : option
-        ),
-      }));
+      if (e.target.className === "QandA-poll-option-text") {
+        //for formData optionsText updation
+        setFormData(prev => ({
+          ...prev,
+          options: prev.options.map((option, i) =>
+            i === index ? { ...option, optionText: e.target.value } : option
+          ),
+        }));
 
-      //for questionData optionsText updation
-      setQuestions(prevItems =>
-        prevItems.map((item, i) =>
-          i === selectedQustionNumber
-            ? {
-                ...item,
-                options: item.options.map((option, i) =>
-                  i === index
-                    ? { ...option, optionText: e.target.value }
-                    : option
-                ),
-              }
-            : item
-        )
-      );
+        //for questionData optionsText updation
+        setQuestions(prevItems =>
+          prevItems.map((item, i) =>
+            i === selectedQustionNumber
+              ? {
+                  ...item,
+                  options: item.options.map((option, i) =>
+                    i === index
+                      ? { ...option, optionText: e.target.value }
+                      : option
+                  ),
+                }
+              : item
+          )
+        );
+      } else {
+        //for formData optionsText updation
+        setFormData(prev => ({
+          ...prev,
+          options: prev.options.map((option, i) =>
+            i === index ? { ...option, imageUrl: e.target.value } : option
+          ),
+        }));
+
+        //for questionData optionsText updation
+        setQuestions(prevItems =>
+          prevItems.map((item, i) =>
+            i === selectedQustionNumber
+              ? {
+                  ...item,
+                  options: item.options.map((option, i) =>
+                    i === index
+                      ? { ...option, imageUrl: e.target.value }
+                      : option
+                  ),
+                }
+              : item
+          )
+        );
+      }
     }
   };
 
@@ -185,6 +231,19 @@ export default function QAndAType({
     );
   };
 
+  //for option text boxes visibilty according to option type selection
+  const setOptionTextBoxVisiblty = () => {
+    if (question.optionType === "imageUrl") {
+      return { display: "none" };
+    }
+  };
+
+  const setOptionImageUrlVisiblty = () => {
+    if (question.optionType === "text") {
+      return { display: "none" };
+    }
+  };
+
   //for timer Styles
   const timerStyleDiv0 = () => {
     if (question.questionText === "") {
@@ -217,10 +276,6 @@ export default function QAndAType({
   };
 
   const handleFormInput = e => {
-    // console.log(e);
-
-    //for optionText updation
-
     //for timers
     if (e.target.id == "timer-off") {
       setFormData(prev => ({ ...prev, timer: 0 }));
@@ -234,6 +289,7 @@ export default function QAndAType({
 
     //for options types radio check
     if (e.target.name == "optionType-radio") {
+      setIsOptionTypeChange(pre => !pre);
       if (e.target.id == "text-type") {
         optionTypeRadioChecked.textType = true;
         optionTypeRadioChecked.imageType = false;
@@ -463,6 +519,7 @@ export default function QAndAType({
                     }
                   />
                   <input
+                    style={setOptionTextBoxVisiblty()}
                     id={`option${index + 1}`}
                     className='QandA-poll-option-text'
                     type='text'
@@ -471,6 +528,19 @@ export default function QAndAType({
                       question.questionText === ""
                         ? formData.options[index].optionText
                         : question.options[index].optionText
+                    }
+                    onChange={e => handleOptionInput(e, index)}
+                  />
+                  <input
+                    style={setOptionImageUrlVisiblty()}
+                    id={`optionImage${index + 1}`}
+                    className='QandA-poll-option-imageUrl'
+                    type='text'
+                    placeholder='Image URL'
+                    value={
+                      question.questionText === ""
+                        ? formData.options[index].imageUrl
+                        : question.options[index].imageUrl
                     }
                     onChange={e => handleOptionInput(e, index)}
                   />

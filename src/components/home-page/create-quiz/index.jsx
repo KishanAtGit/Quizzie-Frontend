@@ -11,35 +11,52 @@ export default function CreateQuiz({
   const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
   const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
   const [openQuizLinkModal, setOpenQuizLinkModal] = useState(false);
-  const [createQuizTypeAndName, setCreateQuizTypeAndName] = useState({
+  const [createQuiz, setCreateQuiz] = useState({
     quizName: "",
     quizType: "",
+    questions: [],
   });
+  const [quizLink, setQuizLink] = useState("");
 
   return (
     <div>
-      <CreateQuizType
-        openCreateQuizTypeModal={openCreateQuizTypeModal}
-        setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
-        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-        setOpenCreatePollModal={setOpenCreatePollModal}
-        createQuizTypeAndName={createQuizTypeAndName}
-        setCreateQuizTypeAndName={setCreateQuizTypeAndName}
-      />
-      <CreateQAndAQuestion
-        openCreateQAndAModal={openCreateQAndAModal}
-        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-        createQuizTypeAndName={createQuizTypeAndName}
-      />
-      <CreatePollQuestion
-        openCreatePollModal={openCreatePollModal}
-        setOpenCreatePollModal={setOpenCreatePollModal}
-        createQuizTypeAndName={createQuizTypeAndName}
-      />
-      <QuizLinkModal
-        openQuizLinkModal={openQuizLinkModal}
-        setOpenQuizLinkModal={setOpenQuizLinkModal}
-      />
+      {openCreateQuizTypeModal && (
+        <CreateQuizType
+          openCreateQuizTypeModal={openCreateQuizTypeModal}
+          setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
+          setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+          setOpenCreatePollModal={setOpenCreatePollModal}
+          createQuiz={createQuiz}
+          setCreateQuiz={setCreateQuiz}
+        />
+      )}
+      {openCreateQAndAModal && (
+        <CreateQAndAQuestion
+          openCreateQAndAModal={openCreateQAndAModal}
+          setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+          createQuiz={createQuiz}
+          setCreateQuiz={setCreateQuiz}
+          setOpenQuizLinkModal={setOpenQuizLinkModal}
+          setQuizLink={setQuizLink}
+        />
+      )}
+      {openCreatePollModal && (
+        <CreatePollQuestion
+          openCreatePollModal={openCreatePollModal}
+          setOpenCreatePollModal={setOpenCreatePollModal}
+          createQuiz={createQuiz}
+          setCreateQuiz={setCreateQuiz}
+          setOpenQuizLinkModal={setOpenQuizLinkModal}
+          setQuizLink={setQuizLink}
+        />
+      )}
+      {openQuizLinkModal && (
+        <QuizLinkModal
+          openQuizLinkModal={openQuizLinkModal}
+          setOpenQuizLinkModal={setOpenQuizLinkModal}
+          quizLink={quizLink}
+        />
+      )}
     </div>
   );
 }

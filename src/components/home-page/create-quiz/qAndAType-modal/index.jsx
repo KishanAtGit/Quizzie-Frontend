@@ -1,5 +1,6 @@
-import Modal from "react-modal";
 import { useState } from "react";
+import { createQuizAPI } from "../../../../services/services.api.quizs";
+import Modal from "react-modal";
 import QAndAType from "./form";
 import x from "../../../../assets/img/charm_cross.png";
 import addIcon from "../../../../assets/img/question_add_button.png";
@@ -8,7 +9,10 @@ import "../index.css";
 export default function CreateQAndAQuestion({
   openCreateQAndAModal,
   setOpenCreateQAndAModal,
-  createQuizTypeAndName,
+  createQuiz,
+  setCreateQuiz,
+  setOpenQuizLinkModal,
+  setQuizLink,
 }) {
   const [questionNumbers, setQuestionNumbers] = useState(["1"]);
   const [questions, setQuestions] = useState([
@@ -43,6 +47,57 @@ export default function CreateQAndAQuestion({
   console.log(questions, "questions");
 
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
+
+  const handleCreateQuiz = async () => {
+    setCreateQuiz(prev => ({ ...prev, questions: questions }));
+    // setQuestions([
+    //   {
+    //     questionText: "",
+    //     optionType: "",
+    //     optionTypeRadioChecked: {
+    //       textType: false,
+    //       imageType: false,
+    //       textAndImageType: false,
+    //     },
+    //     options: [
+    //       {
+    //         optionText: "",
+    //         imageUrl: "",
+    //         isCorrect: false,
+    //       },
+    //       {
+    //         optionText: "",
+    //         imageUrl: "",
+    //         isCorrect: false,
+    //       },
+    //       {
+    //         optionText: "",
+    //         imageUrl: "",
+    //         isCorrect: false,
+    //       },
+    //     ],
+    //     timer: null,
+    //   },
+    // ]);
+
+    //sending data to the server
+    const backendData = await createQuizAPI({
+      ...createQuiz,
+      questions: questions,
+    });
+
+    if (backendData.status === 201) {
+      setQuizLink(
+        "http://localhost:5173/live-quiz/" + `${backendData.data.quizId}`
+      );
+      //resetting createQuiz form
+      setCreateQuiz({});
+
+      setOpenCreateQAndAModal(false);
+      setOpenQuizLinkModal(true);
+    }
+    // console.log(createQuiz, questions, "createQuiz");
+  };
 
   const handleSelection = question => {
     console.log("HandleSelection");
@@ -142,14 +197,16 @@ export default function CreateQAndAQuestion({
             </div>
           )}
         </div>
-        <QAndAType
-          selectedQustionNumber={selectedQustionNumber - 1}
-          question={questions[selectedQustionNumber - 1]}
-          setQuestions={setQuestions}
-        />
+        {questions && (
+          <QAndAType
+            selectedQustionNumber={selectedQustionNumber - 1}
+            question={questions[selectedQustionNumber - 1]}
+            setQuestions={setQuestions}
+          />
+        )}
         <div className='modal-buttons'>
-          <button>Cancel</button>
-          <button>Create Quiz</button>
+          <button onClick={() => setOpenCreateQAndAModal(false)}>Cancel</button>
+          <button onClick={handleCreateQuiz}>Create Quiz</button>
         </div>
       </Modal>
     </div>

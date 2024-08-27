@@ -12,8 +12,11 @@ export default function LogIn() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const data = await loginUser(logInData);
-    if (data.status === 202) {
+    const result = await loginUser(logInData);
+    if (result.status === 202) {
+      console.log(result);
+      localStorage.setItem("token", result.data.token);
+      localStorage.setItem("userId", result.data.userId);
       navigate("/home-page");
     }
   };
