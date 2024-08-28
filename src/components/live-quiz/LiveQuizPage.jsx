@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import LiveQuestion from "./live-question/LiveQuestion";
+import ThanksPage from "./live-question/ThanksPage";
 import "./LiveQuizPage.css";
 
 export default function LiveQuizPage() {
   //   const [searchParams] = useSearchParams();
   const [quiz, setQuiz] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
+  const [buttonText, setButtonText] = useState("Next");
 
   //   const quizId = searchParams.get("quizId");
   const { quizId } = useParams();
@@ -25,34 +27,33 @@ export default function LiveQuizPage() {
       }
     };
     quizId && liveQuiz();
-    // console.log(quiz.questions);
   }, [quizId]);
   console.log(quiz, "quiz");
 
   const handleNextClick = () => {
-    if (currentPage < quiz.questions.length - 1) {
+    if (currentPage < quiz.questions.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   return (
     <div className='live-quiz-Page'>
-      {/* {quiz.questions?.length > 0 && (
-        <div className='live-quiz-questions'>
-          <div>{quiz.questions[currentPage].questionText}</div>
-        </div>
-      )} */}
-      {quiz.questions?.length > 0 && (
+      {currentPage < quiz.questions?.length ? (
         <LiveQuestion
           question={quiz.questions[currentPage]}
           quizType={quiz.quizType}
           currentPage={currentPage}
           totalPage={quiz.questions.length}
+          setButtonText={setButtonText}
         />
+      ) : (
+        <ThanksPage />
       )}
-      <div className='live-quiz-next-button'>
-        <button onClick={handleNextClick}>Next</button>
-      </div>
+      {currentPage < quiz.questions?.length && (
+        <div className='live-quiz-next-button'>
+          <button onClick={handleNextClick}>{buttonText}</button>
+        </div>
+      )}
     </div>
   );
 }

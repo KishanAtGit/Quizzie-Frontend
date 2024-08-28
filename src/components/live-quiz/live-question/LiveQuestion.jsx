@@ -5,7 +5,33 @@ export default function LiveQuestion({
   quizType,
   currentPage,
   totalPage,
+  setButtonText,
 }) {
+  console.log(question.optionType);
+
+  (() => {
+    if (currentPage === totalPage - 1) {
+      setButtonText("Submit");
+    }
+  })();
+
+  const setOptionTextVisiblty = () => {
+    if (question.optionType !== "text") {
+      return { display: "none" };
+    }
+  };
+  const setOptionImageUrlVisiblty = () => {
+    if (question.optionType !== "imageUrl") {
+      return { display: "none" };
+    }
+  };
+
+  const setOptionImageTextVisisbilty = () => {
+    if (question.optionType !== "textAndImageUrl") {
+      return { display: "none" };
+    }
+  };
+
   return (
     <div className='live-quiz-questions'>
       <div className='page-headers'>
@@ -15,60 +41,31 @@ export default function LiveQuestion({
         <div id='timer'>00:10s</div>
       </div>
       <div id='question-text'>{question.questionText}</div>
-      <div className='options'>
+      <div className='live-quiz-options'>
         {question.options.map((option, index) => {
           return (
             <div key={index}>
-              <div className='option-text'>{option.optionText}</div>
+              <div style={setOptionTextVisiblty()} className='option-text'>
+                {option.optionText}
+              </div>
               <img
+                style={setOptionImageUrlVisiblty()}
                 className='option-images'
                 src={option.imageUrl}
                 alt='demoImage'
               />
-              <div className='option-text-images'>
+              <div
+                style={setOptionImageTextVisisbilty()}
+                className='option-text-images'
+              >
                 <span>{option.optionText}</span>
                 <span>
-                  <img
-                    className='option-images'
-                    src={option.imageUrl}
-                    alt='demoImage'
-                  />
+                  <img src={option.imageUrl} alt='demoImage' />
                 </span>
               </div>
             </div>
           );
         })}
-
-        {/* <div>
-          <div className='option-text'>afad</div>
-          <img className='option-images' src={demoImage} alt='demoImage' />
-          <div className='option-text-images'>
-            <span>afad</span>
-            <span>
-              <img className='option-images' src={demoImage} alt='demoImage' />
-            </span>
-          </div>
-        </div>
-        <div>
-          <div className='option-text'>afad</div>
-          <img className='option-images' src={demoImage} alt='demoImage' />
-          <div className='option-text-images'>
-            <span>afad</span>
-            <span>
-              <img className='option-images' src={demoImage} alt='demoImage' />
-            </span>
-          </div>
-        </div>
-        <div>
-          <div className='option-text'>afad</div>
-          <img className='option-images' src={demoImage} alt='demoImage' />
-          <div className='option-text-images'>
-            <span>afad</span>
-            <span>
-              <img className='option-images' src={demoImage} alt='demoImage' />
-            </span>
-          </div>
-        </div> */}
       </div>
     </div>
   );

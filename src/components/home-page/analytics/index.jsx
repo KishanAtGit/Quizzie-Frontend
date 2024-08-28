@@ -3,9 +3,13 @@ import editIcon from "../../../assets/img/uil_edit.png";
 import deleteIcon from "../../../assets/img/material-symbols_delete.png";
 import shareIcon from "../../../assets/img/material-symbols_share.png";
 import "./index.css";
+import { useState } from "react";
+import QuizDeleteModal from "./quiz-delete-modal/QuizDeleteModal";
 
 export default function Analytics({ quizs, setSelectedQuiz }) {
   const navigate = useNavigate();
+
+  const [quizdeleteModal, setQuizDeleteModal] = useState(false);
 
   const handleQuizSelection = index => {
     setSelectedQuiz(index);
@@ -28,14 +32,18 @@ export default function Analytics({ quizs, setSelectedQuiz }) {
               <div key={index} className='analytics-group'>
                 <div className='s-no'>{index + 1}</div>
                 <div className='quiz-name'>{quiz.quizName}</div>
-                <div className='created-on'>Create on</div>
-                <div className='impression'>Impression</div>
+                <div className='created-on'>{quiz.createdOn}</div>
+                <div className='impression'>{quiz.quizImpression}</div>
                 <div className='icons'>
                   <a href='#'>
                     <img src={editIcon} alt='editIcon' />
                   </a>
                   <a href='#'>
-                    <img src={deleteIcon} alt='deleteIcon' />
+                    <img
+                      onClick={() => setQuizDeleteModal(true)}
+                      src={deleteIcon}
+                      alt='deleteIcon'
+                    />
                   </a>
                   <a href='#'>
                     <img src={shareIcon} alt='shareIcon' />
@@ -47,6 +55,12 @@ export default function Analytics({ quizs, setSelectedQuiz }) {
                 >
                   <a href='#'>Question Wise Analysis</a>
                 </div>
+                {quizdeleteModal && (
+                  <QuizDeleteModal
+                    quizdeleteModal={quizdeleteModal}
+                    setQuizDeleteModal={setQuizDeleteModal}
+                  />
+                )}
               </div>
             );
           })}

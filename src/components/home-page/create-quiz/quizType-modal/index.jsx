@@ -37,14 +37,14 @@ export default function CreateQuizType({
   };
 
   const handleSubmit = () => {
-    if (createQuiz.quizType !== "") {
+    if (createQuiz.quizName !== "" && createQuiz.quizType !== "") {
       if (createQuiz.quizType == "Q&A") {
         setOpenCreateQAndAModal(true);
       } else if (createQuiz.quizType == "Poll") {
         setOpenCreatePollModal(true);
       }
+      setOpenCreateQuizTypeModal(false);
     }
-    setOpenCreateQuizTypeModal(false);
   };
 
   return (

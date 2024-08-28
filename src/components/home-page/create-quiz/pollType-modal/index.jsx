@@ -50,35 +50,6 @@ export default function CreatePollQuestion({
 
   const handleCreateQuiz = async () => {
     await setCreateQuiz(prev => ({ ...prev, questions: questions }));
-    // setQuestions([
-    //   {
-    //     questionText: "",
-    //     optionType: "",
-    //     optionTypeRadioChecked: {
-    //       textType: false,
-    //       imageType: false,
-    //       textAndImageType: false,
-    //     },
-    //     options: [
-    //       {
-    //         optionText: "",
-    //         imageUrl: "",
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         optionText: "",
-    //         imageUrl: "",
-    //         isCorrect: false,
-    //       },
-    //       {
-    //         optionText: "",
-    //         imageUrl: "",
-    //         isCorrect: false,
-    //       },
-    //     ],
-    //     timer: null,
-    //   },
-    // ]);
 
     //sending data to the server
     const backendData = await createQuizAPI({
@@ -94,7 +65,6 @@ export default function CreatePollQuestion({
       setOpenQuizLinkModal(true);
     }
   };
-  // console.log(createQuiz, "createQuiz");
 
   const handleSelection = question => {
     console.log("HandleSelection");
@@ -201,7 +171,14 @@ export default function CreatePollQuestion({
           createQuiz={createQuiz}
         />
         <div className='modal-buttons'>
-          <button onClick={() => setOpenCreatePollModal(false)}>Cancel</button>
+          <button
+            onClick={() => {
+              setOpenCreatePollModal(false);
+              setCreateQuiz({});
+            }}
+          >
+            Cancel
+          </button>
           <button onClick={handleCreateQuiz}>Create Quiz</button>
         </div>
       </Modal>

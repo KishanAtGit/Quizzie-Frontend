@@ -34,7 +34,7 @@
   align-self: center;
 }
 
-.options {
+.live-quiz-options {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin: auto;
@@ -45,16 +45,7 @@
   font-weight: 600;
   padding: 1em;
 }
-/* .options > div {
-  background-color: #f0f0f0;
-  width: 10vw;
-  height: 10vh;
-  width: 18vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-} */
+
 .option-text {
   background-color: #f0f0f0;
   width: 10vw;
@@ -65,25 +56,36 @@
   align-items: center;
   border-radius: 5px;
   cursor: pointer;
-  display: none;
 }
 
 .option-images {
-  height: 15vh;
-  width: 13vw;
+  height: 18vh;
+  width: 15vw;
+  border-radius: 5px;
   cursor: pointer;
-  /* display: none; */
 }
 
 .option-text-images {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   cursor: pointer;
-  /* display: none; */
+  border-radius: 5px;
+  gap: 1ch;
+  height: 15vh;
+  width: 15vw;
+  background-color: #f0f0f0;
+  text-align: left;
+  padding: 1em;
+}
+.option-text-images > span:nth-child(1) {
+  text-wrap: wrap;
+  font-size: 0.8em;
 }
 .option-text-images > span:nth-child(2) > img {
-  height: 3vh;
-  width: 7vw;
+  height: 12vh;
+  width: 8vw;
+  border-radius: 10px;
 }
 
 .live-quiz-next-button {
@@ -104,4 +106,62 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+@media screen and (max-width: 450px) {
+  .live-quiz-Page {
+    gap: 4vh;
+  }
+
+  .live-quiz-questions {
+    gap: 2vh;
+  }
+  #question-text {
+    font-size: 2em;
+  }
+
+  .page-headers {
+    font-size: 2.1em;
+    padding: 0.5em;
+  }
+
+  .live-quiz-options {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 3vh;
+    font-size: 2em;
+    color: #000000;
+    font-weight: 600;
+    padding: 1em;
+  }
+
+  .option-text {
+    width: 67vw;
+    height: 7vh;
+  }
+
+  .option-images {
+    height: 14vh;
+    width: 60vw;
+  }
+
+  .live-quiz-next-button > button {
+    width: 38vw;
+    border-radius: 11px;
+  }
+
+  .option-text-images {
+    height: 11vh;
+    width: 55vw;
+  }
+
+  .option-text-images > span:nth-child(1) {
+    font-size: 0.7em;
+  }
+
+  .option-text-images > span:nth-child(2) > img {
+    height: 12vh;
+    width: 27vw;
+  }
 }
