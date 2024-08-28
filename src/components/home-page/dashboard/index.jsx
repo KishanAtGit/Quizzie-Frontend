@@ -13,13 +13,14 @@ export default function Dashboard({ quizs }) {
       <div className='quizs'>
         <div id='quizs-section-heading'>Trending Quizs</div>
         <div className='display-quizs'>
-          {quizs.map((quiz, index) => {
-            return (
-              <div className='quiz' key={index}>
-                {quiz.quizName}
-              </div>
-            );
-          })}
+          {quizs.length > 0 &&
+            quizs?.map((quiz, index) => {
+              return (
+                <div className='quiz' key={index}>
+                  {quiz.quizName}
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
