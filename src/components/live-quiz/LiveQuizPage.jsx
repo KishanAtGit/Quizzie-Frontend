@@ -20,7 +20,6 @@ export default function LiveQuizPage() {
         const response = await axios.get(
           `http://localhost:3000/api/live-quiz/${quizId}`
         );
-        console.log(response.data.quiz);
         setQuiz(response.data.quiz);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -28,7 +27,6 @@ export default function LiveQuizPage() {
     };
     quizId && liveQuiz();
   }, [quizId]);
-  console.log(quiz, "quiz");
 
   const handleNextClick = () => {
     if (currentPage < quiz.questions.length) {

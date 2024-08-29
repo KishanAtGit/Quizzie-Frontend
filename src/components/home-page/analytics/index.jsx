@@ -5,16 +5,32 @@ import shareIcon from "../../../assets/img/material-symbols_share.png";
 import "./index.css";
 import { useState } from "react";
 import QuizDeleteModal from "./quiz-delete-modal/QuizDeleteModal";
+import CreateQAndAQuestion from "../create-quiz/qAndAType-modal/index.jsx";
 
-export default function Analytics({ quizs, setSelectedQuiz }) {
+export default function Analytics({
+  quizs,
+  openCreateQAndAModal,
+  setOpenCreateQAndAModal,
+  openCreatePollModal,
+  setOpenCreatePollModal,
+}) {
   const navigate = useNavigate();
 
   const [quizdeleteModal, setQuizDeleteModal] = useState(false);
-  const [openQandAeditModal, setOpenQandAeditModal] = useState(false);
-  const [PollEditModal, setPollEditModal] = useState(false);
+  const [isEditQandAMode, setIsEditQandAMode] = useState(false);
+  const [isEditPollMode, setIsEditPollMode] = useState(false);
+  const [selectedQuizId, setSelectedQuizId] = useState(null);
+
+  const handleEditQuiz = (quizType, quizId) => {
+    if (quizType === "Q&A") {
+      setIsEditQandAMode(true);
+      setSelectedQuizId(quizId);
+    } else if (quizType === "Poll") {
+      // setOpenCreatePollModal(true);
+    }
+  };
 
   const handleQuizSelection = index => {
-    setSelectedQuiz(index);
     navigate("/home-page/question-wise-analysis");
   };
 
@@ -37,7 +53,10 @@ export default function Analytics({ quizs, setSelectedQuiz }) {
                 <div className='created-on'>{quiz.createdOn}</div>
                 <div className='impression'>{quiz.quizImpression}</div>
                 <div className='icons'>
-                  <a href='#'>
+                  <a
+                    onClick={() => handleEditQuiz(quiz.quizType, quiz._id)}
+                    href='#'
+                  >
                     <img src={editIcon} alt='editIcon' />
                   </a>
                   <a href='#'>
@@ -57,17 +76,24 @@ export default function Analytics({ quizs, setSelectedQuiz }) {
                 >
                   <a href='#'>Question Wise Analysis</a>
                 </div>
-                {quizdeleteModal && (
-                  <QuizDeleteModal
-                    quizdeleteModal={quizdeleteModal}
-                    setQuizDeleteModal={setQuizDeleteModal}
-                  />
-                )}
               </div>
             );
           })}
         </div>
       </div>
+      {isEditQandAMode && (
+        <QuizDeleteModal
+          quizdeleteModal={quizdeleteModal}
+          setQuizDeleteModal={setQuizDeleteModal}
+        />
+      )}
+      {isEditQandAMode && (
+        <CreateQAndAQuestion
+          isEditQandAMode={isEditQandAMode}
+          setIsEditQandAMode={setIsEditQandAMode}
+          quizs={quizs.filter(quiz => quiz._id === selectedQuizId)[0]}
+        />
+      )}
     </div>
   );
 }

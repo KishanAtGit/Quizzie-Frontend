@@ -14,7 +14,6 @@ export default function LogIn() {
     e.preventDefault();
     const result = await loginUser(logInData);
     if (result.status === 202) {
-      console.log(result);
       localStorage.setItem("token", result.data.token);
       localStorage.setItem("userId", result.data.userId);
       navigate("/home-page");

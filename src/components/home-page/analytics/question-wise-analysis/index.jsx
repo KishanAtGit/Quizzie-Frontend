@@ -1,8 +1,6 @@
 import "./index.css";
 
 export default function QuestionWiseAnalysis({ quiz }) {
-  console.log(quiz);
-
   return (
     <div className='question-wise-analysis'>
       <div id='question-wise-analysis-heading'>

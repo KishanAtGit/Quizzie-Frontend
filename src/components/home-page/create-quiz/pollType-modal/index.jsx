@@ -44,7 +44,6 @@ export default function CreatePollQuestion({
       timer: null,
     },
   ]);
-  console.log(questions, "questions");
 
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
 
@@ -67,8 +66,6 @@ export default function CreatePollQuestion({
   };
 
   const handleSelection = question => {
-    console.log("HandleSelection");
-
     if (question == "+") {
       const nextNumber = (
         Number(questionNumbers[questionNumbers.length - 1]) + 1
@@ -110,8 +107,6 @@ export default function CreatePollQuestion({
   };
 
   const handleQuestionDeletion = index => {
-    console.log("handleDeletion");
-
     setQuestions(prev => prev.filter((_, i) => i !== index));
 
     const newNumbers = [...questionNumbers];

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createQuizAPI } from "../../../../services/services.api.quizs";
 import Modal from "react-modal";
 import QAndAType from "./form";
@@ -13,6 +13,9 @@ export default function CreateQAndAQuestion({
   setCreateQuiz,
   setOpenQuizLinkModal,
   setQuizLink,
+  isEditQandAMode,
+  setIsEditQandAMode,
+  quizs,
 }) {
   const [questionNumbers, setQuestionNumbers] = useState(["1"]);
   const [questions, setQuestions] = useState([
@@ -44,7 +47,23 @@ export default function CreateQAndAQuestion({
       timer: null,
     },
   ]);
-  console.log(questions, "questions");
+
+  useEffect(() => {
+    const addSerialNumbers = upTo => {
+      const currentLength = questionNumbers.length;
+      const newNumbers = [];
+      for (let i = currentLength + 1; i <= upTo; i++) {
+        newNumbers.push(i.toString());
+      }
+      return [...questionNumbers, ...newNumbers];
+    };
+
+    if (quizs) {
+      setQuestions(quizs.questions);
+      setQuestionNumbers(addSerialNumbers(quizs.questions.length));
+      console.log(quizs.questions, "useEffect");
+    }
+  }, [quizs]);
 
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
 
@@ -69,9 +88,11 @@ export default function CreateQAndAQuestion({
     }
   };
 
-  const handleSelection = question => {
-    console.log("HandleSelection");
+  const handleUpdateQuiz = () => {
+    console.log(questions, "handleUpdateQuiz");
+  };
 
+  const handleSelection = question => {
     if (question == "+") {
       const nextNumber = (
         Number(questionNumbers[questionNumbers.length - 1]) + 1
@@ -113,8 +134,6 @@ export default function CreateQAndAQuestion({
   };
 
   const handleQuestionDeletion = index => {
-    console.log("handleDeletion");
-
     setQuestions(prev => prev.filter((_, i) => i !== index));
 
     const newNumbers = [...questionNumbers];
@@ -129,7 +148,7 @@ export default function CreateQAndAQuestion({
     <div>
       <Modal
         className='QandA-modal'
-        isOpen={openCreateQAndAModal}
+        isOpen={openCreateQAndAModal ? openCreateQAndAModal : isEditQandAMode}
         onRequestClose={() => setOpenCreateQAndAModal(false)}
         ariaHideApp={false}
       >
@@ -146,7 +165,7 @@ export default function CreateQAndAQuestion({
                 >
                   {question}
                 </div>
-                {questions.length > 1 && (
+                {questions?.length > 1 && (
                   <div className='cross-icon'>
                     <img
                       src={x}
@@ -167,23 +186,32 @@ export default function CreateQAndAQuestion({
             </div>
           )}
         </div>
-        {questions && (
+        {questions?.length > 0 && (
           <QAndAType
             selectedQustionNumber={selectedQustionNumber - 1}
             question={questions[selectedQustionNumber - 1]}
             setQuestions={setQuestions}
+            isEditQandAMode={isEditQandAMode}
           />
         )}
         <div className='modal-buttons'>
           <button
             onClick={() => {
-              setOpenCreateQAndAModal(false);
-              setCreateQuiz({});
+              if (isEditQandAMode) {
+                setIsEditQandAMode(false);
+              } else {
+                setOpenCreateQAndAModal(false);
+                setCreateQuiz({});
+              }
             }}
           >
             Cancel
           </button>
-          <button onClick={handleCreateQuiz}>Create Quiz</button>
+          <button
+            onClick={isEditQandAMode ? handleUpdateQuiz : handleCreateQuiz}
+          >
+            {isEditQandAMode ? "Update Quiz" : "Create Quiz"}
+          </button>
         </div>
       </Modal>
     </div>

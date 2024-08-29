@@ -29,7 +29,6 @@ export default function PollType({
     ],
     timer: null,
   });
-  console.log(formData, "formData");
 
   const [optionTypeRadioChecked, setOptionTypeRadioChecked] = useState({
     textType: false,
@@ -93,8 +92,6 @@ export default function PollType({
 
   //for option input
   const handleOptionInput = (e, index) => {
-    console.log(e.target.className);
-
     if (e.target.name == "options-radio") {
       //for correct option selection in formData
       setFormData(prev => ({

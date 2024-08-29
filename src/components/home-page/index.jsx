@@ -22,7 +22,6 @@ export default function HomePage() {
         response = await getQuizAPI(params);
       }
       setQuiz(response);
-      console.log(response);
     };
     fetchQuizData();
   }, [location.pathname]);
@@ -30,6 +29,8 @@ export default function HomePage() {
   const [selectedQuiz, setSelectedQuiz] = useState("");
   const [quizs, setQuiz] = useState([]);
   const [openCreateQuizTypeModal, setOpenCreateQuizTypeModal] = useState(false);
+  const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
+  const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
 
   return (
     <div className='home-page'>
@@ -87,7 +88,13 @@ export default function HomePage() {
             <Route
               path='/analytics'
               element={
-                <Analytics quizs={quizs} setSelectedQuiz={setSelectedQuiz} />
+                <Analytics
+                  quizs={quizs}
+                  openCreateQAndAModal={openCreateQAndAModal}
+                  openCreatePollModal={openCreatePollModal}
+                  setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+                  setOpenCreatePollModal={setOpenCreatePollModal}
+                />
               }
             />
             <Route
@@ -100,6 +107,10 @@ export default function HomePage() {
       <CreateQuiz
         openCreateQuizTypeModal={openCreateQuizTypeModal}
         setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
+        openCreateQAndAModal={openCreateQAndAModal}
+        openCreatePollModal={openCreatePollModal}
+        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
+        setOpenCreatePollModal={setOpenCreatePollModal}
       />
     </div>
   );

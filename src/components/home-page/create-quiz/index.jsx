@@ -7,9 +7,11 @@ import QuizLinkModal from "./quizLink-modal";
 export default function CreateQuiz({
   openCreateQuizTypeModal,
   setOpenCreateQuizTypeModal,
+  openCreateQAndAModal,
+  openCreatePollModal,
+  setOpenCreateQAndAModal,
+  setOpenCreatePollModal,
 }) {
-  const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
-  const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
   const [openQuizLinkModal, setOpenQuizLinkModal] = useState(false);
   const [createQuiz, setCreateQuiz] = useState({
     quizName: "",

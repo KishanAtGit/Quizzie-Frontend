@@ -5,30 +5,34 @@ export default function QAndAType({
   question,
   setQuestions,
   selectedQustionNumber,
+  isEditQandAMode,
 }) {
-  const [formData, setFormData] = useState({
-    questionText: "",
-    optionType: "",
-    options: [
-      {
-        optionText: "",
-        imageUrl: "",
-        isCorrect: false,
-      },
-      {
-        optionText: "",
-        imageUrl: "",
-        isCorrect: false,
-      },
-      {
-        optionText: "",
-        imageUrl: "",
-        isCorrect: false,
-      },
-    ],
-    timer: null,
-  });
-  console.log(formData, "formData");
+  const [formData, setFormData] = useState(
+    isEditQandAMode
+      ? question
+      : {
+          questionText: "",
+          optionType: "",
+          options: [
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+          ],
+          timer: null,
+        }
+  );
 
   const [optionTypeRadioChecked, setOptionTypeRadioChecked] = useState({
     textType: false,
@@ -74,26 +78,25 @@ export default function QAndAType({
 
   //for resetting option fileds when on option type change
   useEffect(() => {
-    setQuestions(prevItems =>
-      prevItems.map((item, i) =>
-        i === selectedQustionNumber
-          ? {
-              ...item,
-              options: item.options.map(option => ({
-                ...option,
-                optionText: "",
-                imageUrl: "",
-              })),
-            }
-          : item
-      )
-    );
+    !isEditQandAMode &&
+      setQuestions(prevItems =>
+        prevItems.map((item, i) =>
+          i === selectedQustionNumber
+            ? {
+                ...item,
+                options: item.options.map(option => ({
+                  ...option,
+                  optionText: "",
+                  imageUrl: "",
+                })),
+              }
+            : item
+        )
+      );
   }, [isOptionTypeChange]);
 
   //for option input
   const handleOptionInput = (e, index) => {
-    console.log(e);
-
     if (e.target.name == "options-radio") {
       //for correct option selection in formData
       setFormData(prev => ({
@@ -464,6 +467,7 @@ export default function QAndAType({
               handleFormInput(e);
               handleQuestionsData(e);
             }}
+            disabled={isEditQandAMode}
           />
           Text
         </span>
@@ -481,6 +485,7 @@ export default function QAndAType({
               handleFormInput(e);
               handleQuestionsData(e);
             }}
+            disabled={isEditQandAMode}
           />
           Image URL
         </span>
@@ -498,6 +503,7 @@ export default function QAndAType({
               handleFormInput(e);
               handleQuestionsData(e);
             }}
+            disabled={isEditQandAMode}
           />
           Text & Image URL
         </span>
@@ -505,7 +511,8 @@ export default function QAndAType({
       <div className='options-and-timer'>
         <div className='options'>
           <div className='option-field'>
-            {question.options.map((_, index) => {
+            {question.options.map((option, index) => {
+              console.log(question, "question", option, "option");
               return (
                 <div key={index}>
                   <input
@@ -515,8 +522,9 @@ export default function QAndAType({
                     checked={
                       question.questionText === ""
                         ? formData.options[index].isCorrect
-                        : question.options[index].isCorrect
+                        : option.isCorrect
                     }
+                    disabled={isEditQandAMode}
                   />
                   <input
                     style={setOptionTextBoxVisiblty()}
@@ -527,7 +535,7 @@ export default function QAndAType({
                     value={
                       question.questionText === ""
                         ? formData.options[index].optionText
-                        : question.options[index].optionText
+                        : option.optionText
                     }
                     onChange={e => handleOptionInput(e, index)}
                   />
@@ -540,11 +548,11 @@ export default function QAndAType({
                     value={
                       question.questionText === ""
                         ? formData.options[index].imageUrl
-                        : question.options[index].imageUrl
+                        : option.imageUrl
                     }
                     onChange={e => handleOptionInput(e, index)}
                   />
-                  {index >= 2 && (
+                  {index >= 2 && !isEditQandAMode && (
                     <img
                       onClick={() => deleteOptions(index)}
                       className='deleteIcon'

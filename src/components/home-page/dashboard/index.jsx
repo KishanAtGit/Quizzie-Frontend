@@ -1,8 +1,6 @@
 import "./index.css";
 
 export default function Dashboard({ quizs }) {
-  // console.log(quizs);
-
   return (
     <div className='dashboard-page'>
       <div className='dashboards'>

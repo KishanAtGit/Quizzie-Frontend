@@ -7,8 +7,6 @@ export default function LiveQuestion({
   totalPage,
   setButtonText,
 }) {
-  console.log(question.optionType);
-
   (() => {
     if (currentPage === totalPage - 1) {
       setButtonText("Submit");
