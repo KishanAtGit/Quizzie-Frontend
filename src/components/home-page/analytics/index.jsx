@@ -10,6 +10,8 @@ export default function Analytics({ quizs, setSelectedQuiz }) {
   const navigate = useNavigate();
 
   const [quizdeleteModal, setQuizDeleteModal] = useState(false);
+  const [openQandAeditModal, setOpenQandAeditModal] = useState(false);
+  const [PollEditModal, setPollEditModal] = useState(false);
 
   const handleQuizSelection = index => {
     setSelectedQuiz(index);
