@@ -6,14 +6,9 @@ import "./index.css";
 import { useState } from "react";
 import QuizDeleteModal from "./quiz-delete-modal/QuizDeleteModal";
 import CreateQAndAQuestion from "../create-quiz/qAndAType-modal/index.jsx";
+import CreatePollQuestion from "../create-quiz/pollType-modal/index.jsx";
 
-export default function Analytics({
-  quizs,
-  openCreateQAndAModal,
-  setOpenCreateQAndAModal,
-  openCreatePollModal,
-  setOpenCreatePollModal,
-}) {
+export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
   const navigate = useNavigate();
 
   const [quizdeleteModal, setQuizDeleteModal] = useState(false);
@@ -24,13 +19,14 @@ export default function Analytics({
   const handleEditQuiz = (quizType, quizId) => {
     if (quizType === "Q&A") {
       setIsEditQandAMode(true);
-      setSelectedQuizId(quizId);
     } else if (quizType === "Poll") {
-      // setOpenCreatePollModal(true);
+      setIsEditPollMode(true);
     }
+    setSelectedQuizId(quizId);
   };
 
-  const handleQuizSelection = index => {
+  const handleQuizSelection = quiz => {
+    setSelectedQuiz(quiz);
     navigate("/home-page/question-wise-analysis");
   };
 
@@ -72,7 +68,7 @@ export default function Analytics({
                 </div>
                 <div
                   className='question-hyperlink'
-                  onClick={() => handleQuizSelection(index)}
+                  onClick={() => handleQuizSelection(quiz)}
                 >
                   <a href='#'>Question Wise Analysis</a>
                 </div>
@@ -92,6 +88,15 @@ export default function Analytics({
           isEditQandAMode={isEditQandAMode}
           setIsEditQandAMode={setIsEditQandAMode}
           quizs={quizs.filter(quiz => quiz._id === selectedQuizId)[0]}
+          setRefresh={setRefresh}
+        />
+      )}
+      {isEditPollMode && (
+        <CreatePollQuestion
+          isEditPollMode={isEditPollMode}
+          setIsEditPollMode={setIsEditPollMode}
+          quizs={quizs.filter(quiz => quiz._id === selectedQuizId)[0]}
+          setRefresh={setRefresh}
         />
       )}
     </div>

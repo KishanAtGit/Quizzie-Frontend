@@ -21,3 +21,15 @@ export const createQuizAPI = async QuizData => {
     throw error;
   }
 };
+
+export const editQuizAPI = async (quizId, questions) => {
+  try {
+    const response = await apiClient.patch(`quiz/update/${quizId}`, {
+      questions: questions,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error posting data:", error);
+    throw error;
+  }
+};

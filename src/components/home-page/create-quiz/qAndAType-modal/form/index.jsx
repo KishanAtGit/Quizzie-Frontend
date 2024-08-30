@@ -512,7 +512,6 @@ export default function QAndAType({
         <div className='options'>
           <div className='option-field'>
             {question.options.map((option, index) => {
-              console.log(question, "question", option, "option");
               return (
                 <div key={index}>
                   <input
@@ -564,7 +563,7 @@ export default function QAndAType({
               );
             })}
           </div>
-          {question.options.length < 4 && (
+          {question.options.length < 4 && !isEditQandAMode && (
             <div>
               <button onClick={addOption}>Add Option</button>
             </div>

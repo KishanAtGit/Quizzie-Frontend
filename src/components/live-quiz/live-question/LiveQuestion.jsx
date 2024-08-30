@@ -1,17 +1,12 @@
-import demoImage from "../../../assets/img/demoImage.jpg";
-
 export default function LiveQuestion({
   question,
-  quizType,
   currentPage,
   totalPage,
-  setButtonText,
+  setIsCorrectlyChosen,
 }) {
-  (() => {
-    if (currentPage === totalPage - 1) {
-      setButtonText("Submit");
-    }
-  })();
+  const handleCheckAnswer = isCorrect => {
+    setIsCorrectlyChosen(isCorrect);
+  };
 
   const setOptionTextVisiblty = () => {
     if (question.optionType !== "text") {
@@ -42,7 +37,10 @@ export default function LiveQuestion({
       <div className='live-quiz-options'>
         {question.options.map((option, index) => {
           return (
-            <div key={index}>
+            <div
+              onClick={() => handleCheckAnswer(option.isCorrect)}
+              key={index}
+            >
               <div style={setOptionTextVisiblty()} className='option-text'>
                 {option.optionText}
               </div>

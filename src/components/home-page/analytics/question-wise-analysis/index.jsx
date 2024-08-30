@@ -1,6 +1,8 @@
 import "./index.css";
 
 export default function QuestionWiseAnalysis({ quiz }) {
+  console.log(quiz);
+
   return (
     <div className='question-wise-analysis'>
       <div id='question-wise-analysis-heading'>
@@ -11,29 +13,30 @@ export default function QuestionWiseAnalysis({ quiz }) {
         <span>Impressions : 667</span>
       </div>
       <div className='questions'>
-        {quiz.questionType == "Q&A"
+        {quiz.quizType == "Q&A"
           ? quiz.questions.map((question, index) => {
               return (
                 <div key={index} className='question'>
                   <div className='question-name'>
-                    Q.{index + 1} {question.question}
+                    Q.{index + 1} {question.questionText}
                   </div>
                   <div className='question-analysis'>
                     <div>
                       <span className='responses'>
-                        {question.questionAttempted}
+                        {question.totalPeopleAttempted}
                       </span>
                       <span>people Attempted the question</span>
                     </div>
                     <div>
                       <span className='responses'>
-                        {question.questionAttemptCorrect}
+                        {question.peopleAttemptedCorrectly || 0}
                       </span>
                       <span>people Answered Correctly</span>
                     </div>
                     <div>
                       <span className='responses'>
-                        {question.questionAttemptFail}
+                        {Number(question.totalPeopleAttempted) -
+                          Number(question.peopleAttemptedCorrectly) || 0}
                       </span>
                       <span>people Answered Incorrectly</span>
                     </div>

@@ -10,6 +10,10 @@ import "./index.css";
 
 export default function HomePage() {
   const location = useLocation();
+  const [refresh, setRefresh] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState("");
+  const [quizs, setQuiz] = useState([]);
+  const [openCreateQuizTypeModal, setOpenCreateQuizTypeModal] = useState(false);
 
   useEffect(() => {
     const params = { isTrending: true, isSorted: true };
@@ -24,13 +28,7 @@ export default function HomePage() {
       setQuiz(response);
     };
     fetchQuizData();
-  }, [location.pathname]);
-
-  const [selectedQuiz, setSelectedQuiz] = useState("");
-  const [quizs, setQuiz] = useState([]);
-  const [openCreateQuizTypeModal, setOpenCreateQuizTypeModal] = useState(false);
-  const [openCreateQAndAModal, setOpenCreateQAndAModal] = useState(false);
-  const [openCreatePollModal, setOpenCreatePollModal] = useState(false);
+  }, [location.pathname, refresh]);
 
   return (
     <div className='home-page'>
@@ -90,16 +88,14 @@ export default function HomePage() {
               element={
                 <Analytics
                   quizs={quizs}
-                  openCreateQAndAModal={openCreateQAndAModal}
-                  openCreatePollModal={openCreatePollModal}
-                  setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-                  setOpenCreatePollModal={setOpenCreatePollModal}
+                  setRefresh={setRefresh}
+                  setSelectedQuiz={setSelectedQuiz}
                 />
               }
             />
             <Route
               path='/question-wise-analysis'
-              element={<QuestionWiseAnalysis quiz={quizs[selectedQuiz]} />}
+              element={<QuestionWiseAnalysis quiz={selectedQuiz} />}
             />
           </Routes>
         </div>
@@ -107,10 +103,7 @@ export default function HomePage() {
       <CreateQuiz
         openCreateQuizTypeModal={openCreateQuizTypeModal}
         setOpenCreateQuizTypeModal={setOpenCreateQuizTypeModal}
-        openCreateQAndAModal={openCreateQAndAModal}
-        openCreatePollModal={openCreatePollModal}
-        setOpenCreateQAndAModal={setOpenCreateQAndAModal}
-        setOpenCreatePollModal={setOpenCreatePollModal}
+        setRefresh={setRefresh}
       />
     </div>
   );

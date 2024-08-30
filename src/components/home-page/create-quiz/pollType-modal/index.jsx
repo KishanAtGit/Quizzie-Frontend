@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { createQuizAPI } from "../../../../services/services.api.quizs";
+import { useState, useEffect } from "react";
+import {
+  createQuizAPI,
+  editQuizAPI,
+} from "../../../../services/services.api.quizs";
 import Modal from "react-modal";
 import PollType from "./form";
 import x from "../../../../assets/img/charm_cross.png";
@@ -13,6 +16,10 @@ export default function CreatePollQuestion({
   setCreateQuiz,
   setOpenQuizLinkModal,
   setQuizLink,
+  isEditPollMode,
+  setIsEditPollMode,
+  quizs,
+  setRefresh,
 }) {
   const [questionNumbers, setQuestionNumbers] = useState(["1"]);
   const [questions, setQuestions] = useState([
@@ -45,6 +52,23 @@ export default function CreatePollQuestion({
     },
   ]);
 
+  useEffect(() => {
+    const addSerialNumbers = upTo => {
+      const currentLength = questionNumbers.length;
+      const newNumbers = [];
+      for (let i = currentLength + 1; i <= upTo; i++) {
+        newNumbers.push(i.toString());
+      }
+      return [...questionNumbers, ...newNumbers];
+    };
+
+    if (quizs) {
+      setQuestions(quizs.questions);
+      setQuestionNumbers(addSerialNumbers(quizs.questions.length));
+      console.log(quizs.questions, "useEffect");
+    }
+  }, [quizs]);
+
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
 
   const handleCreateQuiz = async () => {
@@ -57,11 +81,23 @@ export default function CreatePollQuestion({
     });
 
     if (backendData.status === 201) {
+      setRefresh(prev => !prev);
       setQuizLink(
         "http://localhost:5173/live-quiz/" + `${backendData.data.quizId}`
       );
+      //resetting createQuiz form
+      setCreateQuiz({});
+
       setOpenCreatePollModal(false);
       setOpenQuizLinkModal(true);
+    }
+  };
+
+  const handleUpdateQuiz = async () => {
+    const response = await editQuizAPI(quizs._id, questions);
+    if (response.status === 200) {
+      setRefresh(prev => !prev);
+      setIsEditPollMode(false);
     }
   };
 
@@ -121,8 +157,14 @@ export default function CreatePollQuestion({
     <div>
       <Modal
         className='QandA-modal'
-        isOpen={openCreatePollModal}
-        onRequestClose={() => setOpenCreatePollModal(false)}
+        isOpen={isEditPollMode ? isEditPollMode : openCreatePollModal}
+        onRequestClose={() => {
+          if (isEditPollMode) {
+            setIsEditPollMode(false);
+          } else {
+            setOpenCreatePollModal(false);
+          }
+        }}
         ariaHideApp={false}
       >
         <div className='question-numbers'>
@@ -150,7 +192,7 @@ export default function CreatePollQuestion({
               </div>
             );
           })}
-          {questionNumbers.length < 5 && (
+          {questionNumbers.length < 5 && !isEditPollMode && (
             <div
               style={{ cursor: "pointer" }}
               onClick={() => handleSelection("+")}
@@ -159,22 +201,33 @@ export default function CreatePollQuestion({
             </div>
           )}
         </div>
-        <PollType
-          selectedQustionNumber={selectedQustionNumber - 1}
-          question={questions[selectedQustionNumber - 1]}
-          setQuestions={setQuestions}
-          createQuiz={createQuiz}
-        />
+        {questions?.length > 0 && (
+          <PollType
+            selectedQustionNumber={selectedQustionNumber - 1}
+            question={questions[selectedQustionNumber - 1]}
+            setQuestions={setQuestions}
+            createQuiz={createQuiz}
+            isEditPollMode={isEditPollMode}
+          />
+        )}
         <div className='modal-buttons'>
           <button
             onClick={() => {
-              setOpenCreatePollModal(false);
-              setCreateQuiz({});
+              if (isEditPollMode) {
+                setIsEditPollMode(false);
+              } else {
+                setOpenCreatePollModal(false);
+                setCreateQuiz({});
+              }
             }}
           >
             Cancel
           </button>
-          <button onClick={handleCreateQuiz}>Create Quiz</button>
+          <button
+            onClick={isEditPollMode ? handleUpdateQuiz : handleCreateQuiz}
+          >
+            {isEditPollMode ? "Update Quiz" : "Create Quiz"}
+          </button>
         </div>
       </Modal>
     </div>

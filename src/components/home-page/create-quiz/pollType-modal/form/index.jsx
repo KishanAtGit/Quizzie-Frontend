@@ -6,29 +6,34 @@ export default function PollType({
   setQuestions,
   selectedQustionNumber,
   createQuiz,
+  isEditPollMode,
 }) {
-  const [formData, setFormData] = useState({
-    questionText: "",
-    optionType: "",
-    options: [
-      {
-        optionText: "",
-        imageUrl: "",
-        isCorrect: false,
-      },
-      {
-        optionText: "",
-        imageUrl: "",
-        isCorrect: false,
-      },
-      {
-        optionText: "",
-        imageUrl: "",
-        isCorrect: false,
-      },
-    ],
-    timer: null,
-  });
+  const [formData, setFormData] = useState(
+    isEditPollMode
+      ? question
+      : {
+          questionText: "",
+          optionType: "",
+          options: [
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+            {
+              optionText: "",
+              imageUrl: "",
+              isCorrect: false,
+            },
+          ],
+          timer: null,
+        }
+  );
 
   const [optionTypeRadioChecked, setOptionTypeRadioChecked] = useState({
     textType: false,
@@ -74,20 +79,21 @@ export default function PollType({
 
   //for resetting option fileds when on option type change
   useEffect(() => {
-    setQuestions(prevItems =>
-      prevItems.map((item, i) =>
-        i === selectedQustionNumber
-          ? {
-              ...item,
-              options: item.options.map(option => ({
-                ...option,
-                optionText: "",
-                imageUrl: "",
-              })),
-            }
-          : item
-      )
-    );
+    !isEditPollMode &&
+      setQuestions(prevItems =>
+        prevItems.map((item, i) =>
+          i === selectedQustionNumber
+            ? {
+                ...item,
+                options: item.options.map(option => ({
+                  ...option,
+                  optionText: "",
+                  imageUrl: "",
+                })),
+              }
+            : item
+        )
+      );
   }, [isOptionTypeChange]);
 
   //for option input
@@ -230,8 +236,8 @@ export default function PollType({
   };
 
   //radio buttons hiding for pollType
-  const setradioButtonVisibltyToNoneForPollType = () => {
-    if (createQuiz.quizType == "Poll") {
+  const setradioButtonAndTimerVisibltyToNoneForPollType = () => {
+    if (createQuiz?.quizType == "Poll" || isEditPollMode) {
       return { display: "none" };
     }
   };
@@ -469,6 +475,7 @@ export default function PollType({
               handleFormInput(e);
               handleQuestionsData(e);
             }}
+            disabled={isEditPollMode}
           />
           Text
         </span>
@@ -486,6 +493,7 @@ export default function PollType({
               handleFormInput(e);
               handleQuestionsData(e);
             }}
+            disabled={isEditPollMode}
           />
           Image URL
         </span>
@@ -503,6 +511,7 @@ export default function PollType({
               handleFormInput(e);
               handleQuestionsData(e);
             }}
+            disabled={isEditPollMode}
           />
           Text & Image URL
         </span>
@@ -510,19 +519,20 @@ export default function PollType({
       <div className='options-and-timer'>
         <div className='options'>
           <div className='option-field'>
-            {question.options.map((_, index) => {
+            {question.options.map((option, index) => {
               return (
                 <div key={index}>
                   <input
-                    style={setradioButtonVisibltyToNoneForPollType()}
+                    style={setradioButtonAndTimerVisibltyToNoneForPollType()}
                     type='radio'
                     name='options-radio'
                     onChange={e => handleOptionInput(e, index)}
                     checked={
                       question.questionText === ""
                         ? formData.options[index].isCorrect
-                        : question.options[index].isCorrect
+                        : option.isCorrect
                     }
+                    disabled={isEditPollMode}
                   />
                   <input
                     style={setOptionTextBoxVisiblty()}
@@ -533,7 +543,7 @@ export default function PollType({
                     value={
                       question.questionText === ""
                         ? formData.options[index].optionText
-                        : question.options[index].optionText
+                        : option.optionText
                     }
                     onChange={e => handleOptionInput(e, index)}
                   />
@@ -546,11 +556,11 @@ export default function PollType({
                     value={
                       question.questionText === ""
                         ? formData.options[index].imageUrl
-                        : question.options[index].imageUrl
+                        : option.imageUrl
                     }
                     onChange={e => handleOptionInput(e, index)}
                   />
-                  {index >= 2 && (
+                  {index >= 2 && !isEditPollMode && (
                     <img
                       onClick={() => deleteOptions(index)}
                       className='deleteIcon'
@@ -562,14 +572,14 @@ export default function PollType({
               );
             })}
           </div>
-          {question.options.length < 4 && (
+          {question.options.length < 4 && !isEditPollMode && (
             <div>
               <button onClick={addOption}>Add Option</button>
             </div>
           )}
         </div>
         <div
-          style={setradioButtonVisibltyToNoneForPollType()}
+          style={setradioButtonAndTimerVisibltyToNoneForPollType()}
           className='timer'
         >
           <div>Timer</div>

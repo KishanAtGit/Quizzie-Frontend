@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { createQuizAPI } from "../../../../services/services.api.quizs";
+import {
+  createQuizAPI,
+  editQuizAPI,
+} from "../../../../services/services.api.quizs";
 import Modal from "react-modal";
 import QAndAType from "./form";
 import x from "../../../../assets/img/charm_cross.png";
@@ -16,6 +19,7 @@ export default function CreateQAndAQuestion({
   isEditQandAMode,
   setIsEditQandAMode,
   quizs,
+  setRefresh,
 }) {
   const [questionNumbers, setQuestionNumbers] = useState(["1"]);
   const [questions, setQuestions] = useState([
@@ -77,6 +81,7 @@ export default function CreateQAndAQuestion({
     });
 
     if (backendData.status === 201) {
+      setRefresh(prev => !prev);
       setQuizLink(
         "http://localhost:5173/live-quiz/" + `${backendData.data.quizId}`
       );
@@ -88,8 +93,12 @@ export default function CreateQAndAQuestion({
     }
   };
 
-  const handleUpdateQuiz = () => {
-    console.log(questions, "handleUpdateQuiz");
+  const handleUpdateQuiz = async () => {
+    const response = await editQuizAPI(quizs._id, questions);
+    if (response.status === 200) {
+      setRefresh(prev => !prev);
+      setIsEditQandAMode(false);
+    }
   };
 
   const handleSelection = question => {
@@ -148,8 +157,14 @@ export default function CreateQAndAQuestion({
     <div>
       <Modal
         className='QandA-modal'
-        isOpen={openCreateQAndAModal ? openCreateQAndAModal : isEditQandAMode}
-        onRequestClose={() => setOpenCreateQAndAModal(false)}
+        isOpen={isEditQandAMode ? isEditQandAMode : openCreateQAndAModal}
+        onRequestClose={() => {
+          if (isEditQandAMode) {
+            setIsEditQandAMode(false);
+          } else {
+            setOpenCreateQAndAModal(false);
+          }
+        }}
         ariaHideApp={false}
       >
         <div className='question-numbers'>
@@ -177,7 +192,7 @@ export default function CreateQAndAQuestion({
               </div>
             );
           })}
-          {questionNumbers.length < 5 && (
+          {questionNumbers.length < 5 && !isEditQandAMode && (
             <div
               style={{ cursor: "pointer" }}
               onClick={() => handleSelection("+")}
