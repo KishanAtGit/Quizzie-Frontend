@@ -3,9 +3,13 @@ export default function LiveQuestion({
   currentPage,
   totalPage,
   setIsCorrectlyChosen,
+  quizType,
+  timeLeft,
 }) {
-  const handleCheckAnswer = isCorrect => {
-    setIsCorrectlyChosen(isCorrect);
+  const handleCheckAnswer = option => {
+    quizType === "Q&A"
+      ? setIsCorrectlyChosen(option.isCorrect)
+      : setIsCorrectlyChosen(option._id);
   };
 
   const setOptionTextVisiblty = () => {
@@ -31,16 +35,13 @@ export default function LiveQuestion({
         <div id='question-numbers'>
           0{currentPage + 1}/0{totalPage}
         </div>
-        <div id='timer'>00:10s</div>
+        <div id='timer'>{timeLeft}</div>
       </div>
       <div id='question-text'>{question.questionText}</div>
       <div className='live-quiz-options'>
         {question.options.map((option, index) => {
           return (
-            <div
-              onClick={() => handleCheckAnswer(option.isCorrect)}
-              key={index}
-            >
+            <div onClick={() => handleCheckAnswer(option)} key={index}>
               <div style={setOptionTextVisiblty()} className='option-text'>
                 {option.optionText}
               </div>

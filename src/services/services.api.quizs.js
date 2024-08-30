@@ -18,7 +18,6 @@ export const createQuizAPI = async QuizData => {
     return response;
   } catch (error) {
     console.error("Error posting data:", error);
-    throw error;
   }
 };
 
@@ -30,6 +29,14 @@ export const editQuizAPI = async (quizId, questions) => {
     return response;
   } catch (error) {
     console.error("Error posting data:", error);
-    throw error;
+  }
+};
+
+export const deleteQuizAPI = async quizId => {
+  try {
+    const response = await apiClient.delete(`quiz/delete/${quizId}`);
+    return response;
+  } catch (error) {
+    console.error("Error deleting quiz:", error);
   }
 };

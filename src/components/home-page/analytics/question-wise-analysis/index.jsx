@@ -9,8 +9,8 @@ export default function QuestionWiseAnalysis({ quiz }) {
         {quiz.quizName} Question Analysis
       </div>
       <div className='quiz-creation'>
-        <span>Created on : 04 Sep, 2023</span>
-        <span>Impressions : 667</span>
+        <span>Created on : {quiz.createdOn}</span>
+        <span>Impressions : {quiz.quizImpression}</span>
       </div>
       <div className='questions'>
         {quiz.quizType == "Q&A"
@@ -48,14 +48,14 @@ export default function QuestionWiseAnalysis({ quiz }) {
               return (
                 <div key={index} className='question'>
                   <div className='question-name'>
-                    Q.{index + 1} {question.question}
+                    Q.{index + 1} {question.questionText}
                   </div>
                   <div className='question-analysis question-analysis-poll'>
                     {question.options.map((option, index) => {
                       return (
                         <div key={index}>
                           <span className='responses'>
-                            {option.countOfResponses}
+                            {option.timesChosen || 0}
                           </span>
                           <span>{option.optionText}</span>
                         </div>

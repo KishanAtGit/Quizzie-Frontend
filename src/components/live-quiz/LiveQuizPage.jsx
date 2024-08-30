@@ -10,6 +10,7 @@ export default function LiveQuizPage() {
   const [quiz, setQuiz] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   const [isCorrectlyChosen, setIsCorrectlyChosen] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(null);
 
   //   const quizId = searchParams.get("quizId");
   const { quizId } = useParams();
@@ -18,6 +19,7 @@ export default function LiveQuizPage() {
     const getLiveQuiz = async () => {
       const Quiz = await liveQuiz(quizId);
       setQuiz(Quiz);
+      setTimeLeft(Quiz?.questions[0]?.timer);
     };
 
     getLiveQuiz();
@@ -26,14 +28,33 @@ export default function LiveQuizPage() {
   const handleNextClick = async () => {
     if (currentPage < quiz.questions.length) {
       setCurrentPage(currentPage + 1);
+      await checkLiveQuiz(
+        quizId,
+        quiz.questions[currentPage]._id,
+        isCorrectlyChosen
+      );
     }
-    await checkLiveQuiz(
-      quizId,
-      quiz.questions[currentPage]._id,
-      isCorrectlyChosen
-    );
     setIsCorrectlyChosen(false);
+    setTimeLeft(quiz.questions[currentPage + 1]?.timer);
   };
+
+  useEffect(() => {
+    // setTimeLeft(question.timer);
+
+    const interval = setInterval(() => {
+      setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
+    if (timeLeft === 0) {
+      setIsCorrectlyChosen(false);
+      handleNextClick();
+    }
+    return () => {
+      return clearInterval(interval);
+      // if (timeLeft == 0) {
+      //   setTimeLeft(timer);
+      // }
+    };
+  }, [timeLeft]);
 
   return (
     <div className='live-quiz-Page'>
@@ -43,9 +64,12 @@ export default function LiveQuizPage() {
           currentPage={currentPage}
           totalPage={quiz.questions.length}
           setIsCorrectlyChosen={setIsCorrectlyChosen}
+          handleNextClick={handleNextClick}
+          timeLeft={timeLeft}
+          setTimeLeft={setTimeLeft}
         />
       ) : (
-        <ThanksPage />
+        currentPage == quiz.questions?.length && <ThanksPage />
       )}
       {currentPage < quiz.questions?.length && (
         <div className='live-quiz-next-button'>

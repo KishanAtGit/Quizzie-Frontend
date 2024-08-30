@@ -25,6 +25,11 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
     setSelectedQuizId(quizId);
   };
 
+  const handleDeleteQuiz = quizId => {
+    setSelectedQuizId(quizId);
+    setQuizDeleteModal(true);
+  };
+
   const handleQuizSelection = quiz => {
     setSelectedQuiz(quiz);
     navigate("/home-page/question-wise-analysis");
@@ -47,7 +52,7 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
                 <div className='s-no'>{index + 1}</div>
                 <div className='quiz-name'>{quiz.quizName}</div>
                 <div className='created-on'>{quiz.createdOn}</div>
-                <div className='impression'>{quiz.quizImpression}</div>
+                <div className='impression'>{quiz.quizImpression || 0}</div>
                 <div className='icons'>
                   <a
                     onClick={() => handleEditQuiz(quiz.quizType, quiz._id)}
@@ -57,7 +62,7 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
                   </a>
                   <a href='#'>
                     <img
-                      onClick={() => setQuizDeleteModal(true)}
+                      onClick={() => handleDeleteQuiz(quiz._id)}
                       src={deleteIcon}
                       alt='deleteIcon'
                     />
@@ -77,10 +82,12 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
           })}
         </div>
       </div>
-      {isEditQandAMode && (
+      {quizdeleteModal && (
         <QuizDeleteModal
           quizdeleteModal={quizdeleteModal}
           setQuizDeleteModal={setQuizDeleteModal}
+          selectedQuizId={selectedQuizId}
+          setRefresh={setRefresh}
         />
       )}
       {isEditQandAMode && (
