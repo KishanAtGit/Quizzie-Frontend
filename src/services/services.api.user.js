@@ -7,9 +7,11 @@ export const registerUser = async signUpData => {
       url: "http://localhost:3000/api/auth/register",
       data: signUpData,
     });
+
     return data;
   } catch (error) {
     console.log(error);
+    return error.response;
   }
 };
 
@@ -23,5 +25,6 @@ export const loginUser = async logInData => {
     return data;
   } catch (error) {
     console.log(error);
+    return error.response;
   }
 };

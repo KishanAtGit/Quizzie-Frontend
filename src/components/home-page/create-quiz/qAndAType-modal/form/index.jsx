@@ -88,6 +88,7 @@ export default function QAndAType({
                   ...option,
                   optionText: "",
                   imageUrl: "",
+                  isCorrect: false,
                 })),
               }
             : item
@@ -520,7 +521,9 @@ export default function QAndAType({
                     onChange={e => handleOptionInput(e, index)}
                     checked={
                       question.questionText === ""
-                        ? formData.options[index].isCorrect
+                        ? index < formData.options.length
+                          ? formData.options[index].isCorrect
+                          : false
                         : option.isCorrect
                     }
                     disabled={isEditQandAMode}
@@ -533,7 +536,9 @@ export default function QAndAType({
                     placeholder='Text'
                     value={
                       question.questionText === ""
-                        ? formData.options[index].optionText
+                        ? index < formData.options.length
+                          ? formData.options[index].optionText
+                          : ""
                         : option.optionText
                     }
                     onChange={e => handleOptionInput(e, index)}
@@ -546,7 +551,9 @@ export default function QAndAType({
                     placeholder='Image URL'
                     value={
                       question.questionText === ""
-                        ? formData.options[index].imageUrl
+                        ? index < formData.options.length
+                          ? formData.options[index].imageUrl
+                          : ""
                         : option.imageUrl
                     }
                     onChange={e => handleOptionInput(e, index)}

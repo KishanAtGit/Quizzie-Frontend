@@ -52,7 +52,10 @@ export default function CreateQuizType({
       <Modal
         className='modal'
         isOpen={openCreateQuizTypeModal}
-        onRequestClose={() => setOpenCreateQuizTypeModal(false)}
+        onRequestClose={() => {
+          setOpenCreateQuizTypeModal(false);
+          setCreateQuiz({}); //resetting createQuiz form
+        }}
         ariaHideApp={false}
       >
         <div id='modal-quiz-name'>

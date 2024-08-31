@@ -6,7 +6,7 @@ export const getQuizAPI = async params => {
     const response = await apiClient.get(`/quiz/${userId}`, {
       params: params ? params : {},
     });
-    return response.data.quiz;
+    return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

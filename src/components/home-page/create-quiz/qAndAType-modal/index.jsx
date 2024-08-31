@@ -83,7 +83,7 @@ export default function CreateQAndAQuestion({
     if (backendData.status === 201) {
       setRefresh(prev => !prev);
       setQuizLink(
-        "http://localhost:5173/live-quiz/" + `${backendData.data.quizId}`
+        `${window.location.origin}/live-quiz/${backendData.data.quizId}`
       );
       //resetting createQuiz form
       setCreateQuiz({});
@@ -137,6 +137,7 @@ export default function CreateQAndAQuestion({
           timer: null,
         },
       ]);
+      setSelectedQustionNumber(questionNumbers.length + 1);
     } else {
       setSelectedQustionNumber(Number(question));
     }
@@ -193,10 +194,7 @@ export default function CreateQAndAQuestion({
             );
           })}
           {questionNumbers.length < 5 && !isEditQandAMode && (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => handleSelection("+")}
-            >
+            <div className='add-icon' onClick={() => handleSelection("+")}>
               <img src={addIcon} alt='addIcon' />
             </div>
           )}

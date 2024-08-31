@@ -29,9 +29,11 @@
   cursor: pointer;
 }
 
-.menus > a > div {
-  padding: 0 1em;
+.menus > a > div,
+.menus > div {
+  padding: 0 0 0 1em;
   border-radius: 0.3em;
+  width: 9vw;
 }
 
 #left-footer {

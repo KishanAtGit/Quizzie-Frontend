@@ -11,11 +11,47 @@
 }
 .dashboards > div {
   background-color: white;
-  border-radius: 5px;
-  height: 14vh;
-  width: 15vw;
+  border-radius: 7px;
+  height: 16vh;
+  width: 17vw;
   text-align: center;
-  padding: 2em;
+  padding: 0.5em;
+}
+
+.total-quizs {
+  color: #ff5d01;
+  gap: 2ch;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+}
+.total-quizs > span:nth-child(1) {
+  font-size: 2.5em;
+  margin: 0 0.3em;
+}
+
+.total-questions {
+  color: #60b84b;
+  gap: 2ch;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+}
+.total-questions > span:nth-child(1) {
+  font-size: 2.5em;
+  margin: 0 0.3em;
+}
+
+.total-impressions {
+  color: #5076ff;
+  gap: 2ch;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+}
+.total-impressions > span:nth-child(1) {
+  font-size: 2.5em;
+  margin: 0 0.3em;
 }
 
 .quizs {
@@ -38,8 +74,33 @@
 
 .quiz {
   background-color: white;
-  width: 11vw;
-  height: 8vh;
+  width: 12vw;
+  height: 9vh;
   border-radius: 5px;
   padding: 1em;
+  display: grid;
+  gap: 1ch;
+}
+.quiz > :nth-child(1) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quiz > :nth-child(1) > div:nth-child(1) {
+  font-size: 1.6em;
+}
+.quiz > :nth-child(1) > div:nth-child(2) {
+  display: flex;
+  gap: 0.4em;
+  font-size: 1em;
+  color: #ff5d01;
+  font-weight: 700;
+  align-items: center;
+}
+.quiz > :nth-child(2) {
+  color: #60b84b;
+}
+
+.no-trending-quizes-image > img {
+  margin: 0 10vw;
 }

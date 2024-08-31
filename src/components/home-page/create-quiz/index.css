@@ -26,8 +26,6 @@
   box-shadow: 2px 2px 12px -2px #00000040;
   border-radius: 7px;
   padding: 0.5em;
-}
-input::placeholder {
   color: #9f9f9f;
 }
 
@@ -73,12 +71,11 @@ input::placeholder {
   background-color: white;
   color: #474444;
   box-shadow: 2px 2px 13px 0px #00000040;
+  cursor: pointer;
 }
-.modal-buttons > button:hover {
+.modal-buttons > button:nth-child(2) {
   background-color: #60b84b;
   color: white;
-  box-shadow: none;
-  cursor: pointer;
 }
 
 /* Q&A Quiz */
@@ -94,7 +91,7 @@ input::placeholder {
   outline: none;
   width: 38vw;
   height: 65vh;
-  gap: 2vh;
+  gap: 5vh;
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -108,25 +105,39 @@ input::placeholder {
 }
 
 .question-number {
-  text-align: center;
   border-radius: 50%;
-  width: 2.2vw;
-  border: 1px solid black;
+  width: 2.7vw;
+  height: 5.8vh;
   cursor: pointer;
-  font-size: 2em;
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 15px -2px #00000040;
 }
 
 .cross-icon {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -2px;
+  right: 1px;
+  cursor: pointer;
+}
+.cross-icon > img {
+  width: 0.7vw;
+  height: 1.6vh;
+}
+
+.add-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
 .display-form {
   display: flex;
   flex-direction: column;
-  gap: 2vh;
+  gap: 3vh;
 }
 
 #QandA-Poll-text-box {
@@ -135,10 +146,13 @@ input::placeholder {
 }
 #QandA-Poll-text-box > input {
   width: 97%;
-  height: 5vh;
+  height: 4vh;
   color: #9f9f9f;
   padding: 0.5em;
   margin: 0 auto;
+  border: none;
+  border-radius: 0.8em;
+  box-shadow: 0px 0px 15px 0px #00000040;
 }
 
 .option-types {
@@ -155,7 +169,7 @@ input::placeholder {
 
 .options {
   display: grid;
-  gap: 2vh;
+  gap: 3vh;
 }
 
 .option-field {
@@ -163,14 +177,19 @@ input::placeholder {
 }
 .option-field > div {
   display: flex;
-  height: 4vh;
   gap: 2vw;
   align-items: center;
 }
-
 .QandA-poll-option-text,
 .QandA-poll-option-imageUrl {
-  border-radius: 5px;
+  border-radius: 8px;
+  height: 3vh;
+  color: #9f9f9f;
+  padding: 0.5em;
+  margin: 0 auto;
+  border: none;
+  border-radius: 0.8em;
+  box-shadow: 0px 0px 15px 0px #00000040;
 }
 
 .deleteIcon {

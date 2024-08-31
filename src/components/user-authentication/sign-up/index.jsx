@@ -68,7 +68,7 @@ export default function SignUp() {
     if (data.status === 201) {
       navigate("/log-in");
     }
-    if (data.status === 409) {
+    if (data.status === 400) {
       setErrors(prev => ({
         ...prev,
         email: "User already exists",

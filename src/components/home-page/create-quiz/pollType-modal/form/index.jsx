@@ -89,6 +89,7 @@ export default function PollType({
                   ...option,
                   optionText: "",
                   imageUrl: "",
+                  isCorrect: false,
                 })),
               }
             : item
@@ -440,6 +441,7 @@ export default function PollType({
       );
     }
   };
+  console.log(question, "question-form");
 
   return (
     <div className='display-form'>
@@ -449,7 +451,7 @@ export default function PollType({
           type='text'
           placeholder='Poll Question'
           value={
-            question.questionText === ""
+            question && question.questionText === ""
               ? formData.questionText
               : question.questionText
           }
@@ -520,9 +522,12 @@ export default function PollType({
         <div className='options'>
           <div className='option-field'>
             {question.options.map((option, index) => {
+              console.log(option, index);
+              console.log(formData.options, "formdata");
+
               return (
                 <div key={index}>
-                  <input
+                  {/* <input
                     style={setradioButtonAndTimerVisibltyToNoneForPollType()}
                     type='radio'
                     name='options-radio'
@@ -533,7 +538,7 @@ export default function PollType({
                         : option.isCorrect
                     }
                     disabled={isEditPollMode}
-                  />
+                  /> */}
                   <input
                     style={setOptionTextBoxVisiblty()}
                     id={`option${index + 1}`}
@@ -542,7 +547,9 @@ export default function PollType({
                     placeholder='Text'
                     value={
                       question.questionText === ""
-                        ? formData.options[index].optionText
+                        ? index < formData.options.length
+                          ? formData.options[index].optionText
+                          : ""
                         : option.optionText
                     }
                     onChange={e => handleOptionInput(e, index)}
@@ -555,7 +562,9 @@ export default function PollType({
                     placeholder='Image URL'
                     value={
                       question.questionText === ""
-                        ? formData.options[index].imageUrl
+                        ? index < formData.options.length
+                          ? formData.options[index].imageUrl
+                          : ""
                         : option.imageUrl
                     }
                     onChange={e => handleOptionInput(e, index)}

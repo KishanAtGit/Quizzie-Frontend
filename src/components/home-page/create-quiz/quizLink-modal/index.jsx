@@ -1,4 +1,5 @@
 import Modal from "react-modal";
+import { toast } from "react-toastify";
 import crossIcon from "../../../../assets/img/charm_cross.png";
 import "../index.css";
 
@@ -7,6 +8,11 @@ export default function QuizLinkModal({
   setOpenQuizLinkModal,
   quizLink,
 }) {
+  const notify = () => {
+    toast.success("Link copied to Clipboard");
+    navigator.clipboard.writeText(quizLink);
+  };
+
   return (
     <Modal
       className='quiz-link-modal'
@@ -30,7 +36,7 @@ export default function QuizLinkModal({
         <a href={quizLink}>{quizLink}</a>
       </div>
       <div className='link-share-button'>
-        <button>Share</button>
+        <button onClick={notify}>Share</button>
       </div>
     </Modal>
   );

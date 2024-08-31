@@ -137,6 +137,7 @@ export default function CreatePollQuestion({
           timer: null,
         },
       ]);
+      setSelectedQustionNumber(prev => prev + 1);
     } else {
       setSelectedQustionNumber(Number(question));
     }

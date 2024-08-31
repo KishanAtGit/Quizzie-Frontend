@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import editIcon from "../../../assets/img/uil_edit.png";
 import deleteIcon from "../../../assets/img/material-symbols_delete.png";
 import shareIcon from "../../../assets/img/material-symbols_share.png";
-import "./index.css";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import QuizDeleteModal from "./quiz-delete-modal/QuizDeleteModal";
 import CreateQAndAQuestion from "../create-quiz/qAndAType-modal/index.jsx";
 import CreatePollQuestion from "../create-quiz/pollType-modal/index.jsx";
+import "./index.css";
 
 export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
   const navigate = useNavigate();
@@ -35,6 +36,13 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
     navigate("/home-page/question-wise-analysis");
   };
 
+  const notify = quizId => {
+    toast.success("Link copied to Clipboard");
+    navigator.clipboard.writeText(
+      `${window.location.origin}/live-quiz/${quizId}`
+    );
+  };
+
   return (
     <div className='analytics-page'>
       <div id='analytics-section-heading'>Quiz Analysis</div>
@@ -54,28 +62,29 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
                 <div className='created-on'>{quiz.createdOn}</div>
                 <div className='impression'>{quiz.quizImpression || 0}</div>
                 <div className='icons'>
-                  <a
-                    onClick={() => handleEditQuiz(quiz.quizType, quiz._id)}
-                    href='#'
-                  >
+                  <a onClick={() => handleEditQuiz(quiz.quizType, quiz._id)}>
                     <img src={editIcon} alt='editIcon' />
                   </a>
-                  <a href='#'>
+                  <a>
                     <img
                       onClick={() => handleDeleteQuiz(quiz._id)}
                       src={deleteIcon}
                       alt='deleteIcon'
                     />
                   </a>
-                  <a href='#'>
-                    <img src={shareIcon} alt='shareIcon' />
+                  <a>
+                    <img
+                      onClick={() => notify(quiz._id)}
+                      src={shareIcon}
+                      alt='shareIcon'
+                    />
                   </a>
                 </div>
                 <div
                   className='question-hyperlink'
                   onClick={() => handleQuizSelection(quiz)}
                 >
-                  <a href='#'>Question Wise Analysis</a>
+                  <a>Question Wise Analysis</a>
                 </div>
               </div>
             );

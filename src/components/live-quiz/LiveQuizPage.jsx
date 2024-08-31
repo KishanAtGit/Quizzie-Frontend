@@ -6,13 +6,11 @@ import ThanksPage from "./live-question/ThanksPage";
 import "./LiveQuizPage.css";
 
 export default function LiveQuizPage() {
-  //   const [searchParams] = useSearchParams();
   const [quiz, setQuiz] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   const [isCorrectlyChosen, setIsCorrectlyChosen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
 
-  //   const quizId = searchParams.get("quizId");
   const { quizId } = useParams();
 
   useEffect(() => {
@@ -39,21 +37,18 @@ export default function LiveQuizPage() {
   };
 
   useEffect(() => {
-    // setTimeLeft(question.timer);
-
-    const interval = setInterval(() => {
-      setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
+    let interval;
+    if (timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
+    }
     if (timeLeft === 0) {
       setIsCorrectlyChosen(false);
       handleNextClick();
     }
-    return () => {
-      return clearInterval(interval);
-      // if (timeLeft == 0) {
-      //   setTimeLeft(timer);
-      // }
-    };
+
+    return () => clearInterval(interval);
   }, [timeLeft]);
 
   return (
