@@ -5,8 +5,9 @@
   flex-direction: column;
   gap: 2vh;
   width: 60vw;
+  height: 65vh;
   align-items: center;
-  margin: 10vh auto;
+  margin: 12vh auto;
   padding: 3em;
   box-shadow: 3px 3px 30px 4px #00000026;
 }
@@ -28,12 +29,19 @@
   border-radius: 5px;
 }
 
-.log-in > form,
 .sign-up > form {
   margin-top: 4vh;
   display: flex;
   flex-direction: column;
   gap: 6vh;
+  align-items: center;
+}
+
+.log-in > form {
+  margin-top: 7vh;
+  display: flex;
+  flex-direction: column;
+  gap: 9vh;
   align-items: center;
 }
 
@@ -52,14 +60,14 @@
 }
 
 .labels {
-  font-size: 1.5em;
+  font-size: 1.7em;
 }
 
 .input-fields > input {
   width: 20vw;
   padding: 0.3em;
   background-color: #f4f4f4;
-  border: none;
+  /* border: none; */
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 }

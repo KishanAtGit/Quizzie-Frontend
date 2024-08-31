@@ -12,11 +12,68 @@ export default function SignUp() {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  let isValid = true;
+  const validate = () => {
+    isValid = true;
+    const newErrors = {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
+
+    if (signUpData.name.length < 3 || signUpData.name.length == "") {
+      newErrors.name = "Invalid name";
+      isValid = false;
+    }
+
+    // Email validation
+    if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
+      newErrors.email = "Invalid Email";
+      isValid = false;
+    }
+
+    // Password validation
+    if (signUpData.password.length < 6) {
+      newErrors.password = "Weak password";
+      isValid = false;
+    }
+
+    // Confirm Password validation
+    if (
+      signUpData.password !== signUpData.confirmPassword ||
+      signUpData.confirmPassword == ""
+    ) {
+      newErrors.confirmPassword = "Passwords doesn't match";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!validate()) return;
+
     const data = await registerUser(signUpData);
+
     if (data.status === 201) {
       navigate("/log-in");
+    }
+    if (data.status === 409) {
+      setErrors(prev => ({
+        ...prev,
+        email: "User already exists",
+      }));
+      isValid = false;
     }
   };
 
@@ -24,6 +81,10 @@ export default function SignUp() {
     setSignUpData(prev => ({
       ...prev,
       [e.target.id]: e.target.value,
+    }));
+    setErrors(prev => ({
+      ...prev,
+      [e.target.id]: "",
     }));
   };
 
@@ -41,26 +102,48 @@ export default function SignUp() {
             <input
               type='text'
               id='name'
-              value={signUpData.name}
+              value={errors.name || signUpData.name}
               onChange={handleChange}
+              style={{
+                color: errors.name ? "#D60000" : "#474444",
+                border: errors.name ? "1px solid #D60000" : "none",
+              }}
+              onClick={() => setErrors(prev => ({ ...prev, name: "" }))}
             />
             <input
-              type='text'
+              type='email'
               id='email'
-              value={signUpData.email}
+              value={errors.email || signUpData.email}
               onChange={handleChange}
+              style={{
+                color: errors.email ? "#D60000" : "#474444",
+                border: errors.email ? "1px solid #D60000" : "none",
+              }}
+              onClick={() => setErrors(prev => ({ ...prev, email: "" }))}
             />
             <input
-              type='text'
+              type={errors.password ? "text" : "password"}
               id='password'
-              value={signUpData.password}
               onChange={handleChange}
+              value={errors.password || signUpData.password}
+              style={{
+                color: errors.password ? "#D60000" : "#474444",
+                border: errors.password ? "1px solid #D60000" : "none",
+              }}
+              onClick={() => setErrors(prev => ({ ...prev, password: "" }))}
             />
             <input
-              type='text'
+              type={errors.confirmPassword ? "text" : "password"}
               id='confirmPassword'
-              value={signUpData.confirmPassword}
+              value={errors.confirmPassword || signUpData.confirmPassword}
               onChange={handleChange}
+              style={{
+                color: errors.confirmPassword ? "#D60000" : "#474444",
+                border: errors.confirmPassword ? "1px solid #D60000" : "none",
+              }}
+              onClick={() =>
+                setErrors(prev => ({ ...prev, confirmPassword: "" }))
+              }
             />
           </div>
         </div>
