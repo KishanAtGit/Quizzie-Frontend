@@ -4,7 +4,7 @@ export const registerUser = async signUpData => {
   try {
     const data = await axios({
       method: "post",
-      url: "http://localhost:3000/api/auth/register",
+      url: "https://quizzie-backend-lhsz.onrender.com/api/auth/register",
       data: signUpData,
     });
 
@@ -19,7 +19,7 @@ export const loginUser = async logInData => {
   try {
     const data = await axios({
       method: "post",
-      url: "http://localhost:3000/api/auth/login",
+      url: "https://quizzie-backend-lhsz.onrender.com/api/auth/login",
       data: logInData,
     });
     return data;
