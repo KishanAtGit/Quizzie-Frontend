@@ -42,6 +42,8 @@ export default function QAndAType({
 
   const [isOptionTypeChange, setIsOptionTypeChange] = useState(false);
 
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+
   useEffect(() => {
     //for formData resetting on new question tab
     setFormData({
@@ -99,6 +101,9 @@ export default function QAndAType({
   //for option input
   const handleOptionInput = (e, index) => {
     if (e.target.name == "options-radio") {
+      //for radio button selection
+      setSelectedOptionIndex(index);
+
       //for correct option selection in formData
       setFormData(prev => ({
         ...prev,
@@ -125,7 +130,7 @@ export default function QAndAType({
         )
       );
     } else {
-      if (e.target.className === "QandA-poll-option-text") {
+      if (e.target.classList.contains("QandA-poll-option-text")) {
         //for formData optionsText updation
         setFormData(prev => ({
           ...prev,
@@ -149,8 +154,8 @@ export default function QAndAType({
               : item
           )
         );
-      } else {
-        //for formData optionsText updation
+      } else if (e.target.classList.contains("QandA-poll-option-imageUrl")) {
+        //for formData imageUrl updation
         setFormData(prev => ({
           ...prev,
           options: prev.options.map((option, i) =>
@@ -158,7 +163,7 @@ export default function QAndAType({
           ),
         }));
 
-        //for questionData optionsText updation
+        //for questionData imageUrl updation
         setQuestions(prevItems =>
           prevItems.map((item, i) =>
             i === selectedQustionNumber
@@ -458,6 +463,7 @@ export default function QAndAType({
           <input
             type='radio'
             id='text-type'
+            style={{ accentColor: "#353434" }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.textType
@@ -476,6 +482,7 @@ export default function QAndAType({
           <input
             type='radio'
             id='image-type'
+            style={{ accentColor: "#353434" }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.imageType
@@ -494,6 +501,7 @@ export default function QAndAType({
           <input
             type='radio'
             id='text-and-image-type'
+            style={{ accentColor: "#353434" }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.textAndImageType
@@ -513,11 +521,13 @@ export default function QAndAType({
         <div className='options'>
           <div className='option-field'>
             {question.options.map((option, index) => {
+              const isSelected = selectedOptionIndex === index;
               return (
                 <div key={index}>
                   <input
                     type='radio'
                     name='options-radio'
+                    style={{ accentColor: "#60B84B" }}
                     onChange={e => handleOptionInput(e, index)}
                     checked={
                       question.questionText === ""
@@ -528,36 +538,42 @@ export default function QAndAType({
                     }
                     disabled={isEditQandAMode}
                   />
-                  <input
-                    style={setOptionTextBoxVisiblty()}
-                    id={`option${index + 1}`}
-                    className='QandA-poll-option-text'
-                    type='text'
-                    placeholder='Text'
-                    value={
-                      question.questionText === ""
-                        ? index < formData.options.length
-                          ? formData.options[index].optionText
-                          : ""
-                        : option.optionText
-                    }
-                    onChange={e => handleOptionInput(e, index)}
-                  />
-                  <input
-                    style={setOptionImageUrlVisiblty()}
-                    id={`optionImage${index + 1}`}
-                    className='QandA-poll-option-imageUrl'
-                    type='text'
-                    placeholder='Image URL'
-                    value={
-                      question.questionText === ""
-                        ? index < formData.options.length
-                          ? formData.options[index].imageUrl
-                          : ""
-                        : option.imageUrl
-                    }
-                    onChange={e => handleOptionInput(e, index)}
-                  />
+                  <div className='option-input-text-fields'>
+                    <input
+                      style={setOptionTextBoxVisiblty()}
+                      id={`option${index + 1}`}
+                      className={`QandA-poll-option-text ${
+                        isSelected ? "selected-input" : ""
+                      }`}
+                      type='text'
+                      placeholder='Text'
+                      value={
+                        question.questionText === ""
+                          ? index < formData.options.length
+                            ? formData.options[index].optionText
+                            : ""
+                          : option.optionText
+                      }
+                      onChange={e => handleOptionInput(e, index)}
+                    />
+                    <input
+                      style={setOptionImageUrlVisiblty()}
+                      id={`optionImage${index + 1}`}
+                      className={`QandA-poll-option-imageUrl ${
+                        isSelected ? "selected-input" : ""
+                      }`}
+                      type='text'
+                      placeholder='Image URL'
+                      value={
+                        question.questionText === ""
+                          ? index < formData.options.length
+                            ? formData.options[index].imageUrl
+                            : ""
+                          : option.imageUrl
+                      }
+                      onChange={e => handleOptionInput(e, index)}
+                    />
+                  </div>
                   {index >= 2 && !isEditQandAMode && (
                     <img
                       onClick={() => deleteOptions(index)}
@@ -571,7 +587,7 @@ export default function QAndAType({
             })}
           </div>
           {question.options.length < 4 && !isEditQandAMode && (
-            <div>
+            <div className='addButton'>
               <button onClick={addOption}>Add Option</button>
             </div>
           )}
