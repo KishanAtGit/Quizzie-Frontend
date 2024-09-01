@@ -43,6 +43,7 @@ export default function LiveQuestion({
       <div id='question-text'>{question.questionText}</div>
       <div className='live-quiz-options'>
         {question.options.map((option, index) => {
+          debugger;
           return (
             <div
               className={`${selectedOption === index ? "option-active" : ""}`}
