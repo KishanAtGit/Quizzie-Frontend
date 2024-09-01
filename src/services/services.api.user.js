@@ -1,13 +1,12 @@
-import axios from "axios";
+import apiClient from "../axios.config";
 
 export const registerUser = async signUpData => {
   try {
-    const data = await axios({
+    const data = await apiClient({
       method: "post",
-      url: "https://quizzie-backend-lhsz.onrender.com/api/auth/register",
+      url: "auth/register",
       data: signUpData,
     });
-
     return data;
   } catch (error) {
     console.log(error);
@@ -17,9 +16,9 @@ export const registerUser = async signUpData => {
 
 export const loginUser = async logInData => {
   try {
-    const data = await axios({
+    const data = await apiClient({
       method: "post",
-      url: "https://quizzie-backend-lhsz.onrender.com/api/auth/login",
+      url: "auth/login",
       data: logInData,
     });
     return data;

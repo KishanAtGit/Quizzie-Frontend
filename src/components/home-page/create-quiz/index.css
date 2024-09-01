@@ -73,12 +73,6 @@
   box-shadow: 2px 2px 13px 0px #00000040;
   cursor: pointer;
 }
-.modal-buttons > button:nth-child(2) {
-  background-color: #60b84b;
-  color: white;
-}
-
-/* Q&A Quiz */
 
 .QandA-poll-modal {
   position: absolute;

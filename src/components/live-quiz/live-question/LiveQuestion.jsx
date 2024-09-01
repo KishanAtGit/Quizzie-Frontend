@@ -5,11 +5,14 @@ export default function LiveQuestion({
   setIsCorrectlyChosen,
   quizType,
   timeLeft,
+  selectedOption,
+  setSelectedOption,
 }) {
-  const handleCheckAnswer = option => {
-    quizType === "Q&A"
-      ? setIsCorrectlyChosen(option.isCorrect)
-      : setIsCorrectlyChosen(option._id);
+  const handleCheckAnswer = (option, index) => {
+    setSelectedOption(index);
+    if (quizType === "Q&A") {
+      setIsCorrectlyChosen(option.isCorrect);
+    } else setIsCorrectlyChosen(option._id);
   };
 
   const setOptionTextVisiblty = () => {
@@ -41,10 +44,16 @@ export default function LiveQuestion({
       <div className='live-quiz-options'>
         {question.options.map((option, index) => {
           return (
-            <div onClick={() => handleCheckAnswer(option)} key={index}>
-              <div style={setOptionTextVisiblty()} className='option-text'>
-                {option.optionText}
-              </div>
+            <div
+              className={`${selectedOption === index ? "option-active" : ""}`}
+              onClick={() => handleCheckAnswer(option, index)}
+              key={index}
+            >
+              {option.optionText !== "" && (
+                <div style={setOptionTextVisiblty()} className='option-text'>
+                  {option.optionText}
+                </div>
+              )}
               <img
                 style={setOptionImageUrlVisiblty()}
                 className='option-images'

@@ -35,8 +35,7 @@ export default function QuestionWiseAnalysis({ quiz }) {
                     </div>
                     <div>
                       <span className='responses'>
-                        {Number(question.totalPeopleAttempted || 0) -
-                          Number(question.peopleAttemptedCorrectly) || 0}
+                        {Number(question.peopleAttemptedWrongly) || 0}
                       </span>
                       <span>people Answered Incorrectly</span>
                     </div>

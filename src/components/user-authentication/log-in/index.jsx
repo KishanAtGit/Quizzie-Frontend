@@ -46,7 +46,7 @@ export default function LogIn() {
     if (result.status === 202) {
       localStorage.setItem("token", result.data.token);
       localStorage.setItem("userId", result.data.userId);
-      navigate("/home-page");
+      navigate("/home-page/dashboard");
     } else if (result.status === 400) {
       setErrors({
         email: "Wrong email or password",

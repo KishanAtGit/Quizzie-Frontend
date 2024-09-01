@@ -10,31 +10,23 @@ export default function LiveQuizPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isCorrectlyChosen, setIsCorrectlyChosen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
+  let [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const { quizId } = useParams();
+
+  useEffect(() => {}, [score]);
 
   useEffect(() => {
     const getLiveQuiz = async () => {
       const Quiz = await liveQuiz(quizId);
       setQuiz(Quiz);
-      setTimeLeft(Quiz?.questions[0]?.timer);
+
+      if (Quiz?.questions[0]?.timer > 0) setTimeLeft(Quiz?.questions[0]?.timer);
     };
 
     getLiveQuiz();
   }, [quizId]);
-
-  const handleNextClick = async () => {
-    if (currentPage < quiz.questions.length) {
-      setCurrentPage(currentPage + 1);
-      await checkLiveQuiz(
-        quizId,
-        quiz.questions[currentPage]._id,
-        isCorrectlyChosen
-      );
-    }
-    setIsCorrectlyChosen(false);
-    setTimeLeft(quiz.questions[currentPage + 1]?.timer);
-  };
 
   useEffect(() => {
     let interval;
@@ -51,6 +43,22 @@ export default function LiveQuizPage() {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
+  const handleNextClick = async () => {
+    setSelectedOption(null);
+    if (isCorrectlyChosen) setScore(score + 1);
+    console.log(score, "score");
+    if (currentPage < quiz.questions.length) {
+      setCurrentPage(currentPage + 1);
+      await checkLiveQuiz(
+        quizId,
+        quiz.questions[currentPage]._id,
+        isCorrectlyChosen
+      );
+    }
+    setIsCorrectlyChosen(false);
+    setTimeLeft(quiz.questions[currentPage + 1]?.timer);
+  };
+
   return (
     <div className='live-quiz-Page'>
       {currentPage < quiz.questions?.length ? (
@@ -59,12 +67,20 @@ export default function LiveQuizPage() {
           currentPage={currentPage}
           totalPage={quiz.questions.length}
           setIsCorrectlyChosen={setIsCorrectlyChosen}
-          handleNextClick={handleNextClick}
+          quizType={quiz.quizType}
           timeLeft={timeLeft}
           setTimeLeft={setTimeLeft}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
         />
       ) : (
-        currentPage == quiz.questions?.length && <ThanksPage />
+        currentPage == quiz.questions?.length && (
+          <ThanksPage
+            score={score}
+            totalPage={quiz.questions.length}
+            quizType={quiz.quizType}
+          />
+        )
       )}
       {currentPage < quiz.questions?.length && (
         <div className='live-quiz-next-button'>

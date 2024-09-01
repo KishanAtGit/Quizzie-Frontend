@@ -52,6 +52,8 @@ export default function CreatePollQuestion({
     },
   ]);
 
+  const [isDisabled, setIsDisabled] = useState(true);
+
   useEffect(() => {
     const addSerialNumbers = upTo => {
       const currentLength = questionNumbers.length;
@@ -72,6 +74,7 @@ export default function CreatePollQuestion({
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
 
   const handleCreateQuiz = async () => {
+    setOpenCreatePollModal(false);
     await setCreateQuiz(prev => ({ ...prev, questions: questions }));
 
     //sending data to the server
@@ -87,8 +90,6 @@ export default function CreatePollQuestion({
       );
       //resetting createQuiz form
       setCreateQuiz({});
-
-      setOpenCreatePollModal(false);
       setOpenQuizLinkModal(true);
     }
   };
@@ -209,6 +210,9 @@ export default function CreatePollQuestion({
             setQuestions={setQuestions}
             createQuiz={createQuiz}
             isEditPollMode={isEditPollMode}
+            isDisabled={isDisabled}
+            setIsDisabled={setIsDisabled}
+            questions={questions}
           />
         )}
         <div className='modal-buttons'>
@@ -226,6 +230,12 @@ export default function CreatePollQuestion({
           </button>
           <button
             onClick={isEditPollMode ? handleUpdateQuiz : handleCreateQuiz}
+            disabled={isDisabled}
+            style={
+              !isDisabled
+                ? { backgroundColor: "#60b84b", color: "white" }
+                : null
+            }
           >
             {isEditPollMode ? "Update Quiz" : "Create Quiz"}
           </button>

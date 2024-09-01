@@ -52,6 +52,8 @@ export default function CreateQAndAQuestion({
     },
   ]);
 
+  const [isDisabled, setIsDisabled] = useState(true);
+
   useEffect(() => {
     const addSerialNumbers = upTo => {
       const currentLength = questionNumbers.length;
@@ -72,6 +74,7 @@ export default function CreateQAndAQuestion({
   const [selectedQustionNumber, setSelectedQustionNumber] = useState(1);
 
   const handleCreateQuiz = async () => {
+    setOpenCreateQAndAModal(false);
     setCreateQuiz(prev => ({ ...prev, questions: questions }));
 
     //sending data to the server
@@ -87,8 +90,6 @@ export default function CreateQAndAQuestion({
       );
       //resetting createQuiz form
       setCreateQuiz({});
-
-      setOpenCreateQAndAModal(false);
       setOpenQuizLinkModal(true);
     }
   };
@@ -205,6 +206,9 @@ export default function CreateQAndAQuestion({
             question={questions[selectedQustionNumber - 1]}
             setQuestions={setQuestions}
             isEditQandAMode={isEditQandAMode}
+            isDisabled={isDisabled}
+            setIsDisabled={setIsDisabled}
+            questions={questions}
           />
         )}
         <div className='modal-buttons'>
@@ -222,6 +226,12 @@ export default function CreateQAndAQuestion({
           </button>
           <button
             onClick={isEditQandAMode ? handleUpdateQuiz : handleCreateQuiz}
+            disabled={isDisabled}
+            style={
+              !isDisabled
+                ? { backgroundColor: "#60b84b", color: "white" }
+                : null
+            }
           >
             {isEditQandAMode ? "Update Quiz" : "Create Quiz"}
           </button>

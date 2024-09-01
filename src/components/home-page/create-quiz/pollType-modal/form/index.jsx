@@ -7,6 +7,8 @@ export default function PollType({
   selectedQustionNumber,
   createQuiz,
   isEditPollMode,
+  setIsDisabled,
+  questions,
 }) {
   const [formData, setFormData] = useState(
     isEditPollMode
@@ -441,7 +443,34 @@ export default function PollType({
       );
     }
   };
-  console.log(question, "question-form");
+
+  const checkFormValidation = () => {
+    const isFormInvalid = questions.some(question => {
+      // Check if questionText is empty
+      if (question.questionText === "") {
+        return true;
+      }
+
+      // Check if all options have text or imageUrl
+      const validOptions = question.options.filter(option => {
+        if (question.optionType == "text") {
+          return option.optionText.trim() !== "";
+        } else if (question.optionType == "imageUrl") {
+          return option.imageUrl.trim() !== "";
+        } else if (question.optionType == "textAndImageUrl") {
+          return (
+            option.optionText.trim() !== "" && option.imageUrl.trim() !== ""
+          );
+        }
+      });
+
+      return validOptions.length < 2;
+    });
+
+    // Disable the form if any question is invalid
+    setIsDisabled(isFormInvalid);
+  };
+  checkFormValidation();
 
   return (
     <div className='display-form'>

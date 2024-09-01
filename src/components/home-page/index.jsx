@@ -113,7 +113,6 @@ export default function HomePage() {
           {quizs && (
             <div className='right-display-space'>
               <Routes>
-                <Route path='/' element={<Dashboard quizs={quizs} />} />
                 <Route
                   path='/dashboard'
                   element={
