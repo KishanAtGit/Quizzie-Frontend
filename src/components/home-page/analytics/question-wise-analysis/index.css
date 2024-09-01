@@ -82,3 +82,9 @@ a {
   width: 10vw;
   height: 8vh;
 }
+
+.no-trending-quizes-image-analytics-page {
+  display: flex;
+  justify-content: center;
+  margin: 9vh 0;
+}

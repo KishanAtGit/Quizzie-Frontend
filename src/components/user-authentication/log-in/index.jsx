@@ -83,7 +83,7 @@ export default function LogIn() {
               onClick={() => setErrors(prev => ({ ...prev, email: "" }))}
             />
             <input
-              type='text'
+              type={errors.password ? "text" : "password"}
               id='password'
               value={errors.password || logInData.password}
               onChange={handleChange}

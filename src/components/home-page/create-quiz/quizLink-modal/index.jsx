@@ -33,7 +33,7 @@ export default function QuizLinkModal({
         Published!
       </div>
       <div id='link-field'>
-        <a href={quizLink}>{quizLink}</a>
+        <div>{quizLink}</div>
       </div>
       <div className='link-share-button'>
         <button onClick={notify}>Share</button>

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import QuizDeleteModal from "./quiz-delete-modal/QuizDeleteModal";
 import CreateQAndAQuestion from "../create-quiz/qAndAType-modal/index.jsx";
 import CreatePollQuestion from "../create-quiz/pollType-modal/index.jsx";
+import emptyTrendingQuizs from "../../../assets/img/no_trending_quezes.png";
 import "./index.css";
 
 export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
@@ -54,41 +55,47 @@ export default function Analytics({ quizs, setRefresh, setSelectedQuiz }) {
             <div className='created-on'>Create on</div>
             <div className='impression'>Impression</div>
           </div>
-          {quizs.map((quiz, index) => {
-            return (
-              <div key={index} className='analytics-group'>
-                <div className='s-no'>{index + 1}</div>
-                <div className='quiz-name'>{quiz.quizName}</div>
-                <div className='created-on'>{quiz.createdOn}</div>
-                <div className='impression'>{quiz.quizImpression || 0}</div>
-                <div className='icons'>
-                  <a onClick={() => handleEditQuiz(quiz.quizType, quiz._id)}>
-                    <img src={editIcon} alt='editIcon' />
-                  </a>
-                  <a>
-                    <img
-                      onClick={() => handleDeleteQuiz(quiz._id)}
-                      src={deleteIcon}
-                      alt='deleteIcon'
-                    />
-                  </a>
-                  <a>
-                    <img
-                      onClick={() => notify(quiz._id)}
-                      src={shareIcon}
-                      alt='shareIcon'
-                    />
-                  </a>
+          {quizs.length > 0 ? (
+            quizs.map((quiz, index) => {
+              return (
+                <div key={index} className='analytics-group'>
+                  <div className='s-no'>{index + 1}</div>
+                  <div className='quiz-name'>{quiz.quizName}</div>
+                  <div className='created-on'>{quiz.createdOn}</div>
+                  <div className='impression'>{quiz.quizImpression || 0}</div>
+                  <div className='icons'>
+                    <a onClick={() => handleEditQuiz(quiz.quizType, quiz._id)}>
+                      <img src={editIcon} alt='editIcon' />
+                    </a>
+                    <a>
+                      <img
+                        onClick={() => handleDeleteQuiz(quiz._id)}
+                        src={deleteIcon}
+                        alt='deleteIcon'
+                      />
+                    </a>
+                    <a>
+                      <img
+                        onClick={() => notify(quiz._id)}
+                        src={shareIcon}
+                        alt='shareIcon'
+                      />
+                    </a>
+                  </div>
+                  <div
+                    className='question-hyperlink'
+                    onClick={() => handleQuizSelection(quiz)}
+                  >
+                    <a>Question Wise Analysis</a>
+                  </div>
                 </div>
-                <div
-                  className='question-hyperlink'
-                  onClick={() => handleQuizSelection(quiz)}
-                >
-                  <a>Question Wise Analysis</a>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <div className='no-trending-quizes-image-analytics-page'>
+              <img src={emptyTrendingQuizs} alt='no-trending-quizes-yet' />
+            </div>
+          )}
         </div>
       </div>
       {quizdeleteModal && (
