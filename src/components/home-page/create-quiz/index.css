@@ -80,7 +80,7 @@
 
 /* Q&A Quiz */
 
-.QandA-modal {
+.QandA-poll-modal {
   position: absolute;
   align-self: center;
   justify-self: center;
@@ -102,6 +102,7 @@
 .question-numbers {
   display: flex;
   gap: 2vw;
+  align-items: center;
 }
 
 .question-number {
@@ -168,7 +169,7 @@
 .addButton {
   display: flex;
   gap: 3vw;
-  margin: 0 3vw;
+  margin: 0 0.3vw;
 }
 .addButton > button {
   width: 12vw;
@@ -204,15 +205,6 @@
   align-items: center;
 }
 
-.selected-input {
-  background-color: #60b84b;
-  color: white;
-}
-
-.selected-input::placeholder {
-  color: white;
-}
-
 .option-input-text-fields {
   display: flex;
   gap: 1vw;
@@ -234,6 +226,15 @@
   border: none;
   border-radius: 0.8em;
   box-shadow: 0px 0px 15px 0px #00000040;
+}
+
+.selected-input {
+  background-color: #60b84b;
+  color: white;
+}
+
+.selected-input::placeholder {
+  color: white;
 }
 
 .deleteIcon {

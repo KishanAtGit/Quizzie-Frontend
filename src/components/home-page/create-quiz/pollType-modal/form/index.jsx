@@ -13,7 +13,7 @@ export default function PollType({
       ? question
       : {
           questionText: "",
-          optionType: "",
+          optionType: "text",
           options: [
             {
               optionText: "",
@@ -36,7 +36,7 @@ export default function PollType({
   );
 
   const [optionTypeRadioChecked, setOptionTypeRadioChecked] = useState({
-    textType: false,
+    textType: true,
     imageType: false,
     textAndImageType: false,
   });
@@ -47,7 +47,7 @@ export default function PollType({
     //for formData resetting on new question tab
     setFormData({
       questionText: "",
-      optionType: "",
+      optionType: "text",
       options: [
         {
           optionText: "",
@@ -71,7 +71,7 @@ export default function PollType({
     //for radio button resetting on new question tab
     setOptionTypeRadioChecked(prev => ({
       ...prev,
-      textType: false,
+      textType: true,
       imageType: false,
       textAndImageType: false,
     }));
@@ -527,48 +527,39 @@ export default function PollType({
 
               return (
                 <div key={index}>
-                  {/* <input
-                    style={setradioButtonAndTimerVisibltyToNoneForPollType()}
-                    type='radio'
-                    name='options-radio'
-                    onChange={e => handleOptionInput(e, index)}
-                    checked={
-                      question.questionText === ""
-                        ? formData.options[index].isCorrect
-                        : option.isCorrect
-                    }
-                    disabled={isEditPollMode}
-                  /> */}
-                  <input
-                    style={setOptionTextBoxVisiblty()}
-                    id={`option${index + 1}`}
-                    className='QandA-poll-option-text'
-                    type='text'
-                    placeholder='Text'
-                    value={
-                      question.questionText === ""
-                        ? index < formData.options.length
-                          ? formData.options[index].optionText
-                          : ""
-                        : option.optionText
-                    }
-                    onChange={e => handleOptionInput(e, index)}
-                  />
-                  <input
-                    style={setOptionImageUrlVisiblty()}
-                    id={`optionImage${index + 1}`}
-                    className='QandA-poll-option-imageUrl'
-                    type='text'
-                    placeholder='Image URL'
-                    value={
-                      question.questionText === ""
-                        ? index < formData.options.length
-                          ? formData.options[index].imageUrl
-                          : ""
-                        : option.imageUrl
-                    }
-                    onChange={e => handleOptionInput(e, index)}
-                  />
+                  <div className='option-input-text-fields'>
+                    <input
+                      style={setOptionTextBoxVisiblty()}
+                      id={`option${index + 1}`}
+                      className='QandA-poll-option-text'
+                      type='text'
+                      placeholder='Text'
+                      value={
+                        question.questionText === ""
+                          ? index < formData.options.length
+                            ? formData.options[index].optionText
+                            : ""
+                          : option.optionText
+                      }
+                      onChange={e => handleOptionInput(e, index)}
+                    />
+                    <input
+                      style={setOptionImageUrlVisiblty()}
+                      id={`optionImage${index + 1}`}
+                      className='QandA-poll-option-imageUrl'
+                      type='text'
+                      placeholder='Image URL'
+                      value={
+                        question.questionText === ""
+                          ? index < formData.options.length
+                            ? formData.options[index].imageUrl
+                            : ""
+                          : option.imageUrl
+                      }
+                      onChange={e => handleOptionInput(e, index)}
+                    />
+                  </div>
+
                   {index >= 2 && !isEditPollMode && (
                     <img
                       onClick={() => deleteOptions(index)}
@@ -582,7 +573,7 @@ export default function PollType({
             })}
           </div>
           {question.options.length < 4 && !isEditPollMode && (
-            <div>
+            <div className='addButton'>
               <button onClick={addOption}>Add Option</button>
             </div>
           )}

@@ -25,9 +25,9 @@ export default function CreateQAndAQuestion({
   const [questions, setQuestions] = useState([
     {
       questionText: "",
-      optionType: "",
+      optionType: "text",
       optionTypeRadioChecked: {
-        textType: false,
+        textType: true,
         imageType: false,
         textAndImageType: false,
       },
@@ -111,9 +111,9 @@ export default function CreateQAndAQuestion({
         ...prev,
         {
           questionText: "",
-          optionType: "",
+          optionType: "text",
           optionTypeRadioChecked: {
-            textType: false,
+            textType: true,
             imageType: false,
             textAndImageType: false,
           },
@@ -157,7 +157,7 @@ export default function CreateQAndAQuestion({
   return (
     <div>
       <Modal
-        className='QandA-modal'
+        className='QandA-poll-modal'
         isOpen={isEditQandAMode ? isEditQandAMode : openCreateQAndAModal}
         onRequestClose={() => {
           if (isEditQandAMode) {

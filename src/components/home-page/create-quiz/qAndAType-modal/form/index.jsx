@@ -12,7 +12,7 @@ export default function QAndAType({
       ? question
       : {
           questionText: "",
-          optionType: "",
+          optionType: "text",
           options: [
             {
               optionText: "",
@@ -35,20 +35,18 @@ export default function QAndAType({
   );
 
   const [optionTypeRadioChecked, setOptionTypeRadioChecked] = useState({
-    textType: false,
+    textType: true,
     imageType: false,
     textAndImageType: false,
   });
 
   const [isOptionTypeChange, setIsOptionTypeChange] = useState(false);
 
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
-
   useEffect(() => {
     //for formData resetting on new question tab
     setFormData({
       questionText: "",
-      optionType: "",
+      optionType: "text",
       options: [
         {
           optionText: "",
@@ -72,7 +70,7 @@ export default function QAndAType({
     //for radio button resetting on new question tab
     setOptionTypeRadioChecked(prev => ({
       ...prev,
-      textType: false,
+      textType: true,
       imageType: false,
       textAndImageType: false,
     }));
@@ -99,88 +97,6 @@ export default function QAndAType({
   }, [isOptionTypeChange]);
 
   //for option input
-  const handleOptionInput = (e, index) => {
-    if (e.target.name == "options-radio") {
-      //for radio button selection
-      setSelectedOptionIndex(index);
-
-      //for correct option selection in formData
-      setFormData(prev => ({
-        ...prev,
-        options: prev.options.map((option, i) =>
-          i === index
-            ? { ...option, isCorrect: true }
-            : { ...option, isCorrect: false }
-        ),
-      }));
-
-      //for correct option selection in questionData
-      setQuestions(prevItems =>
-        prevItems.map((item, i) =>
-          i === selectedQustionNumber
-            ? {
-                ...item,
-                options: item.options.map((option, i) =>
-                  i === index
-                    ? { ...option, isCorrect: true }
-                    : { ...option, isCorrect: false }
-                ),
-              }
-            : item
-        )
-      );
-    } else {
-      if (e.target.classList.contains("QandA-poll-option-text")) {
-        //for formData optionsText updation
-        setFormData(prev => ({
-          ...prev,
-          options: prev.options.map((option, i) =>
-            i === index ? { ...option, optionText: e.target.value } : option
-          ),
-        }));
-
-        //for questionData optionsText updation
-        setQuestions(prevItems =>
-          prevItems.map((item, i) =>
-            i === selectedQustionNumber
-              ? {
-                  ...item,
-                  options: item.options.map((option, i) =>
-                    i === index
-                      ? { ...option, optionText: e.target.value }
-                      : option
-                  ),
-                }
-              : item
-          )
-        );
-      } else if (e.target.classList.contains("QandA-poll-option-imageUrl")) {
-        //for formData imageUrl updation
-        setFormData(prev => ({
-          ...prev,
-          options: prev.options.map((option, i) =>
-            i === index ? { ...option, imageUrl: e.target.value } : option
-          ),
-        }));
-
-        //for questionData imageUrl updation
-        setQuestions(prevItems =>
-          prevItems.map((item, i) =>
-            i === selectedQustionNumber
-              ? {
-                  ...item,
-                  options: item.options.map((option, i) =>
-                    i === index
-                      ? { ...option, imageUrl: e.target.value }
-                      : option
-                  ),
-                }
-              : item
-          )
-        );
-      }
-    }
-  };
 
   //for new options
   const addOption = () => {
@@ -281,6 +197,86 @@ export default function QAndAType({
       }
     } else if (question.timer == 10) {
       return { backgroundColor: "#d60000", color: "white" };
+    }
+  };
+
+  const handleOptionInput = (e, index) => {
+    if (e.target.name == "options-radio") {
+      //for correct option selection in formData
+      setFormData(prev => ({
+        ...prev,
+        options: prev.options.map((option, i) =>
+          i === index
+            ? { ...option, isCorrect: true }
+            : { ...option, isCorrect: false }
+        ),
+      }));
+
+      //for correct option selection in questionData
+      setQuestions(prevItems =>
+        prevItems.map((item, i) =>
+          i === selectedQustionNumber
+            ? {
+                ...item,
+                options: item.options.map((option, i) =>
+                  i === index
+                    ? { ...option, isCorrect: true }
+                    : { ...option, isCorrect: false }
+                ),
+              }
+            : item
+        )
+      );
+    } else {
+      if (e.target.classList.contains("QandA-poll-option-text")) {
+        //for formData optionsText updation
+        setFormData(prev => ({
+          ...prev,
+          options: prev.options.map((option, i) =>
+            i === index ? { ...option, optionText: e.target.value } : option
+          ),
+        }));
+
+        //for questionData optionsText updation
+        setQuestions(prevItems =>
+          prevItems.map((item, i) =>
+            i === selectedQustionNumber
+              ? {
+                  ...item,
+                  options: item.options.map((option, i) =>
+                    i === index
+                      ? { ...option, optionText: e.target.value }
+                      : option
+                  ),
+                }
+              : item
+          )
+        );
+      } else if (e.target.classList.contains("QandA-poll-option-imageUrl")) {
+        //for formData imageUrl updation
+        setFormData(prev => ({
+          ...prev,
+          options: prev.options.map((option, i) =>
+            i === index ? { ...option, imageUrl: e.target.value } : option
+          ),
+        }));
+
+        //for questionData imageUrl updation
+        setQuestions(prevItems =>
+          prevItems.map((item, i) =>
+            i === selectedQustionNumber
+              ? {
+                  ...item,
+                  options: item.options.map((option, i) =>
+                    i === index
+                      ? { ...option, imageUrl: e.target.value }
+                      : option
+                  ),
+                }
+              : item
+          )
+        );
+      }
     }
   };
 
@@ -445,7 +441,7 @@ export default function QAndAType({
         <input
           id='questionText'
           type='text'
-          placeholder='Q & A Quiestion'
+          placeholder='Q & A Question'
           value={
             question.questionText === ""
               ? formData.questionText
@@ -521,7 +517,6 @@ export default function QAndAType({
         <div className='options'>
           <div className='option-field'>
             {question.options.map((option, index) => {
-              const isSelected = selectedOptionIndex === index;
               return (
                 <div key={index}>
                   <input
@@ -543,7 +538,7 @@ export default function QAndAType({
                       style={setOptionTextBoxVisiblty()}
                       id={`option${index + 1}`}
                       className={`QandA-poll-option-text ${
-                        isSelected ? "selected-input" : ""
+                        option.isCorrect ? "selected-input" : ""
                       }`}
                       type='text'
                       placeholder='Text'
@@ -560,7 +555,7 @@ export default function QAndAType({
                       style={setOptionImageUrlVisiblty()}
                       id={`optionImage${index + 1}`}
                       className={`QandA-poll-option-imageUrl ${
-                        isSelected ? "selected-input" : ""
+                        option.isCorrect ? "selected-input" : ""
                       }`}
                       type='text'
                       placeholder='Image URL'
@@ -588,6 +583,7 @@ export default function QAndAType({
           </div>
           {question.options.length < 4 && !isEditQandAMode && (
             <div className='addButton'>
+              <div></div>
               <button onClick={addOption}>Add Option</button>
             </div>
           )}
