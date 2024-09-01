@@ -496,6 +496,10 @@ export default function PollType({
           <input
             type='radio'
             id='text-type'
+            style={{
+              accentColor: "#353434",
+              cursor: isEditPollMode ? "default" : "pointer",
+            }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.textType
@@ -514,6 +518,10 @@ export default function PollType({
           <input
             type='radio'
             id='image-type'
+            style={{
+              accentColor: "#353434",
+              cursor: isEditPollMode ? "default" : "pointer",
+            }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.imageType
@@ -532,6 +540,10 @@ export default function PollType({
           <input
             type='radio'
             id='text-and-image-type'
+            style={{
+              accentColor: "#353434",
+              cursor: isEditPollMode ? "default" : "pointer",
+            }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.textAndImageType
@@ -551,9 +563,6 @@ export default function PollType({
         <div className='options'>
           <div className='option-field'>
             {question.options.map((option, index) => {
-              console.log(option, index);
-              console.log(formData.options, "formdata");
-
               return (
                 <div key={index}>
                   <div className='option-input-text-fields'>

@@ -236,8 +236,6 @@ export default function QAndAType({
   };
 
   const handleQuestionsandFormData = (e, index) => {
-    console.log(formData, "formData", question, "question");
-
     //for timers
     if (e.target.id == "timer-off") {
       setFormData(prev => ({ ...prev, timer: 0 }));
@@ -493,7 +491,10 @@ export default function QAndAType({
           <input
             type='radio'
             id='text-type'
-            style={{ accentColor: "#353434" }}
+            style={{
+              accentColor: "#353434",
+              cursor: isEditQandAMode ? "default" : "pointer",
+            }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.textType
@@ -511,7 +512,10 @@ export default function QAndAType({
           <input
             type='radio'
             id='image-type'
-            style={{ accentColor: "#353434" }}
+            style={{
+              accentColor: "#353434",
+              cursor: isEditQandAMode ? "default" : "pointer",
+            }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.imageType
@@ -529,7 +533,10 @@ export default function QAndAType({
           <input
             type='radio'
             id='text-and-image-type'
-            style={{ accentColor: "#353434" }}
+            style={{
+              accentColor: "#353434",
+              cursor: isEditQandAMode ? "default" : "pointer",
+            }}
             checked={
               question.questionText === ""
                 ? optionTypeRadioChecked.textAndImageType
@@ -553,7 +560,10 @@ export default function QAndAType({
                   <input
                     type='radio'
                     name='options-radio'
-                    style={{ accentColor: "#60B84B" }}
+                    style={{
+                      accentColor: "#353434",
+                      cursor: isEditQandAMode ? "default" : "pointer",
+                    }}
                     onChange={e => handleQuestionsandFormData(e, index)}
                     checked={
                       question.questionText === ""

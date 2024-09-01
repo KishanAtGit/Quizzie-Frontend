@@ -46,7 +46,6 @@ export default function LiveQuizPage() {
   const handleNextClick = async () => {
     setSelectedOption(null);
     if (isCorrectlyChosen) setScore(score + 1);
-    console.log(score, "score");
     if (currentPage < quiz.questions.length) {
       setCurrentPage(currentPage + 1);
       await checkLiveQuiz(

@@ -1,3 +1,7 @@
+a {
+  cursor: pointer;
+}
+
 .question-wise-analysis {
   display: grid;
   margin: 6vh 5vw;

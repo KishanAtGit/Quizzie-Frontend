@@ -67,7 +67,6 @@ export default function CreateQAndAQuestion({
     if (quizs) {
       setQuestions(quizs.questions);
       setQuestionNumbers(addSerialNumbers(quizs.questions.length));
-      console.log(quizs.questions, "useEffect");
     }
   }, [quizs]);
 
