@@ -30,12 +30,6 @@ export default function LiveQuizPage() {
       setScore(score + 1);
     }
 
-    await checkLiveQuiz(
-      quizId,
-      quiz.questions[currentPage]._id,
-      isCorrectlyChosen
-    );
-
     const nextQuestion = currentPage + 1;
     if (nextQuestion < quiz.questions.length) {
       setCurrentPage(nextQuestion);
@@ -44,6 +38,14 @@ export default function LiveQuizPage() {
     }
 
     setSelectedOption(null);
+
+    await checkLiveQuiz(
+      quizId,
+      quiz.questions[currentPage]._id,
+      isCorrectlyChosen
+    );
+
+    setIsCorrectlyChosen(quiz?.quizType === "Q&A" ? false : null);
   };
 
   console.log(score, "score");
