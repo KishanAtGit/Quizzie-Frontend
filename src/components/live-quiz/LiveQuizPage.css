@@ -120,6 +120,7 @@
   width: 100vw;
   gap: 2vh;
   font-weight: 700;
+  background-color: white;
 }
 
 #result-page-heading {
