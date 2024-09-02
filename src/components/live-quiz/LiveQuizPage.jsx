@@ -8,78 +8,62 @@ import "./LiveQuizPage.css";
 export default function LiveQuizPage() {
   const [quiz, setQuiz] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
-  const [isCorrectlyChosen, setIsCorrectlyChosen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(null);
   let [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [isQuizFinished, setIsQuizFinished] = useState(false);
 
   const { quizId } = useParams();
-
-  useEffect(() => {}, [score]);
 
   useEffect(() => {
     const getLiveQuiz = async () => {
       const Quiz = await liveQuiz(quizId);
       setQuiz(Quiz);
-
-      if (Quiz?.questions[0]?.timer > 0) setTimeLeft(Quiz?.questions[0]?.timer);
     };
-
     getLiveQuiz();
   }, [quizId]);
 
-  useEffect(() => {
-    let interval;
-    if (timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
-      }, 1000);
+  const handleNextClick = () => {
+    const nextQuestion = currentPage + 1;
+    if (nextQuestion < quiz.questions.length) {
+      setCurrentPage(nextQuestion);
+    } else {
+      setIsQuizFinished(true);
     }
-    if (timeLeft === 0) {
-      setIsCorrectlyChosen(false);
-      handleNextClick();
-    }
-
-    return () => clearInterval(interval);
-  }, [timeLeft]);
-
-  const handleNextClick = async () => {
-    setSelectedOption(null);
-    if (isCorrectlyChosen) setScore(score + 1);
-    if (currentPage < quiz.questions.length) {
-      setCurrentPage(currentPage + 1);
-      await checkLiveQuiz(
-        quizId,
-        quiz.questions[currentPage]._id,
-        isCorrectlyChosen
-      );
-    }
-    setIsCorrectlyChosen(false);
-    setTimeLeft(quiz.questions[currentPage + 1]?.timer);
   };
+
+  console.log(score, "score");
+  const handleAnswerSelection = async isCorrect => {
+    console.log(isCorrect, "isCorrect");
+
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+    await checkLiveQuiz(quizId, quiz.questions[currentPage]._id, isCorrect);
+  };
+
+  if (isQuizFinished) {
+    return (
+      <ThanksPage
+        score={score}
+        totalPage={quiz.questions.length}
+        quizType={quiz.quizType}
+      />
+    );
+  }
 
   return (
     <div className='live-quiz-Page'>
-      {currentPage < quiz.questions?.length ? (
+      {quiz.questions?.length > 0 && (
         <LiveQuestion
           question={quiz.questions[currentPage]}
-          currentPage={currentPage}
           totalPage={quiz.questions.length}
-          setIsCorrectlyChosen={setIsCorrectlyChosen}
+          currentPage={currentPage}
           quizType={quiz.quizType}
-          timeLeft={timeLeft}
-          setTimeLeft={setTimeLeft}
+          handleAnswerSelection={handleAnswerSelection}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
+          handleNextClick={handleNextClick}
         />
-      ) : (
-        currentPage == quiz.questions?.length && (
-          <ThanksPage
-            score={score}
-            totalPage={quiz.questions.length}
-            quizType={quiz.quizType}
-          />
-        )
       )}
       {currentPage < quiz.questions?.length && (
         <div className='live-quiz-next-button'>

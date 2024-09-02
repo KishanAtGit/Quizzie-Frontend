@@ -1,18 +1,47 @@
+import { useEffect, useState } from "react";
+
 export default function LiveQuestion({
   question,
   currentPage,
   totalPage,
-  setIsCorrectlyChosen,
   quizType,
-  timeLeft,
   selectedOption,
   setSelectedOption,
+  handleAnswerSelection,
+  handleNextClick,
 }) {
+  const [timeLeft, setTimeLeft] = useState(question.timer || null);
+
+  useEffect(() => {
+    setTimeLeft(question.timer || null);
+  }, [question.timer]);
+
+  useEffect(() => {
+    if (timeLeft !== null) {
+      if (timeLeft === 0) {
+        handleAnswerSelection(false);
+        handleNextClick();
+      }
+
+      if (timeLeft > 0) {
+        const timerId = setTimeout(() => {
+          setTimeLeft(timeLeft - 1);
+        }, 1000);
+        return () => clearTimeout(timerId);
+      } else {
+        handleAnswerSelection(false);
+      }
+    }
+  }, [timeLeft]);
+
   const handleCheckAnswer = (option, index) => {
-    setSelectedOption(index);
-    if (quizType === "Q&A") {
-      setIsCorrectlyChosen(option.isCorrect);
-    } else setIsCorrectlyChosen(option._id);
+    if (selectedOption !== index) {
+      setSelectedOption(index);
+      if (quizType === "Q&A") {
+        handleAnswerSelection(option.isCorrect);
+        // setIsCorrectlyChosen(option.isCorrect);
+      } else handleAnswerSelection(option._id);
+    }
   };
 
   const setOptionTextVisiblty = () => {
@@ -38,7 +67,7 @@ export default function LiveQuestion({
         <div id='question-numbers'>
           0{currentPage + 1}/0{totalPage}
         </div>
-        {question.timer > 0 && (
+        {timeLeft !== null && (
           <div id='timer'>{`00:${
             timeLeft == 10 ? timeLeft : "0" + timeLeft
           }s`}</div>
