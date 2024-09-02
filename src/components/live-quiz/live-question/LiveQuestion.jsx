@@ -5,10 +5,11 @@ export default function LiveQuestion({
   currentPage,
   totalPage,
   quizType,
+  handleNextClick,
+  isCorrectlyChosen,
+  setIsCorrectlyChosen,
   selectedOption,
   setSelectedOption,
-  handleAnswerSelection,
-  handleNextClick,
 }) {
   const [timeLeft, setTimeLeft] = useState(question.timer || null);
 
@@ -18,9 +19,8 @@ export default function LiveQuestion({
 
   useEffect(() => {
     if (timeLeft !== null) {
-      if (timeLeft === 0) {
-        handleAnswerSelection(false);
-        handleNextClick();
+      if (timeLeft === 1) {
+        handleNextClick(isCorrectlyChosen);
       }
 
       if (timeLeft > 0) {
@@ -28,20 +28,17 @@ export default function LiveQuestion({
           setTimeLeft(timeLeft - 1);
         }, 1000);
         return () => clearTimeout(timerId);
-      } else {
-        handleAnswerSelection(false);
       }
     }
   }, [timeLeft]);
 
   const handleCheckAnswer = (option, index) => {
-    if (selectedOption !== index) {
-      setSelectedOption(index);
-      if (quizType === "Q&A") {
-        handleAnswerSelection(option.isCorrect);
-        // setIsCorrectlyChosen(option.isCorrect);
-      } else handleAnswerSelection(option._id);
-    }
+    setSelectedOption(index);
+    if (quizType === "Q&A") {
+      setIsCorrectlyChosen(option.isCorrect);
+      // handleAnswerSelection(option.isCorrect);
+      // setIsCorrectlyChosen(option.isCorrect);
+    } else setIsCorrectlyChosen(option._id);
   };
 
   const setOptionTextVisiblty = () => {
@@ -49,6 +46,7 @@ export default function LiveQuestion({
       return { display: "none" };
     }
   };
+
   const setOptionImageUrlVisiblty = () => {
     if (question.optionType !== "imageUrl") {
       return { display: "none" };

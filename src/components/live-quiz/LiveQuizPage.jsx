@@ -9,10 +9,9 @@ export default function LiveQuizPage() {
   const [quiz, setQuiz] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   let [score, setScore] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
-
   const { quizId } = useParams();
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     const getLiveQuiz = async () => {
@@ -22,24 +21,32 @@ export default function LiveQuizPage() {
     getLiveQuiz();
   }, [quizId]);
 
-  const handleNextClick = () => {
+  const [isCorrectlyChosen, setIsCorrectlyChosen] = useState(
+    quiz?.quizType === "Q&A" ? false : null
+  );
+
+  const handleNextClick = async isCorrectlyChosen => {
+    if (isCorrectlyChosen) {
+      setScore(score + 1);
+    }
+
+    await checkLiveQuiz(
+      quizId,
+      quiz.questions[currentPage]._id,
+      isCorrectlyChosen
+    );
+
     const nextQuestion = currentPage + 1;
     if (nextQuestion < quiz.questions.length) {
       setCurrentPage(nextQuestion);
     } else {
       setIsQuizFinished(true);
     }
+
+    setSelectedOption(null);
   };
 
   console.log(score, "score");
-  const handleAnswerSelection = async isCorrect => {
-    console.log(isCorrect, "isCorrect");
-
-    if (isCorrect) {
-      setScore(score + 1);
-    }
-    await checkLiveQuiz(quizId, quiz.questions[currentPage]._id, isCorrect);
-  };
 
   if (isQuizFinished) {
     return (
@@ -59,15 +66,16 @@ export default function LiveQuizPage() {
           totalPage={quiz.questions.length}
           currentPage={currentPage}
           quizType={quiz.quizType}
-          handleAnswerSelection={handleAnswerSelection}
+          handleNextClick={handleNextClick}
+          isCorrectlyChosen={isCorrectlyChosen}
+          setIsCorrectlyChosen={setIsCorrectlyChosen}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
-          handleNextClick={handleNextClick}
         />
       )}
       {currentPage < quiz.questions?.length && (
         <div className='live-quiz-next-button'>
-          <button onClick={handleNextClick}>
+          <button onClick={() => handleNextClick(isCorrectlyChosen)}>
             {currentPage == quiz.questions.length - 1 ? "Submit" : "Next"}
           </button>
         </div>
