@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   createQuizAPI,
   editQuizAPI,
-} from "../../../../services/services.api.quizs";
-import Modal from "react-modal";
-import PollType from "./form";
-import x from "../../../../assets/img/charm_cross.png";
-import addIcon from "../../../../assets/img/question_add_button.png";
-import "../index.css";
+} from '../../../../services/services.api.quizs';
+import Modal from 'react-modal';
+import PollType from './form';
+import x from '../../../../assets/img/charm_cross.png';
+import addIcon from '../../../../assets/img/question_add_button.png';
+import '../index.css';
 
 export default function CreatePollQuestion({
   openCreatePollModal,
@@ -21,11 +21,11 @@ export default function CreatePollQuestion({
   quizs,
   setRefresh,
 }) {
-  const [questionNumbers, setQuestionNumbers] = useState(["1"]);
+  const [questionNumbers, setQuestionNumbers] = useState(['1']);
   const [questions, setQuestions] = useState([
     {
-      questionText: "",
-      optionType: "text",
+      questionText: '',
+      optionType: 'text',
       optionTypeRadioChecked: {
         textType: true,
         imageType: false,
@@ -33,18 +33,18 @@ export default function CreatePollQuestion({
       },
       options: [
         {
-          optionText: "",
-          imageUrl: "",
+          optionText: '',
+          imageUrl: '',
           isCorrect: false,
         },
         {
-          optionText: "",
-          imageUrl: "",
+          optionText: '',
+          imageUrl: '',
           isCorrect: false,
         },
         {
-          optionText: "",
-          imageUrl: "",
+          optionText: '',
+          imageUrl: '',
           isCorrect: false,
         },
       ],
@@ -85,7 +85,7 @@ export default function CreatePollQuestion({
     if (backendData.status === 201) {
       setRefresh(prev => !prev);
       setQuizLink(
-        "http://localhost:5173/live-quiz/" + `${backendData.data.quizId}`
+        `${window.location.origin}/live-quiz/${backendData.data.quizId}`
       );
       //resetting createQuiz form
       setCreateQuiz({});
@@ -102,7 +102,7 @@ export default function CreatePollQuestion({
   };
 
   const handleSelection = question => {
-    if (question == "+") {
+    if (question == '+') {
       const nextNumber = (
         Number(questionNumbers[questionNumbers.length - 1]) + 1
       ).toString();
@@ -110,8 +110,8 @@ export default function CreatePollQuestion({
       setQuestions(prev => [
         ...prev,
         {
-          questionText: "",
-          optionType: "text",
+          questionText: '',
+          optionType: 'text',
           optionTypeRadioChecked: {
             textType: true,
             imageType: false,
@@ -119,18 +119,18 @@ export default function CreatePollQuestion({
           },
           options: [
             {
-              optionText: "",
-              imageUrl: "",
+              optionText: '',
+              imageUrl: '',
               isCorrect: false,
             },
             {
-              optionText: "",
-              imageUrl: "",
+              optionText: '',
+              imageUrl: '',
               isCorrect: false,
             },
             {
-              optionText: "",
-              imageUrl: "",
+              optionText: '',
+              imageUrl: '',
               isCorrect: false,
             },
           ],
@@ -172,7 +172,7 @@ export default function CreatePollQuestion({
           {questionNumbers.map((question, index) => {
             return (
               <div
-                style={{ display: "flex", position: "relative" }}
+                style={{ display: 'flex', position: 'relative' }}
                 key={index}
               >
                 <div
@@ -195,8 +195,8 @@ export default function CreatePollQuestion({
           })}
           {questionNumbers.length < 5 && !isEditPollMode && (
             <div
-              style={{ cursor: "pointer" }}
-              onClick={() => handleSelection("+")}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleSelection('+')}
             >
               <img src={addIcon} alt='addIcon' />
             </div>
@@ -232,11 +232,11 @@ export default function CreatePollQuestion({
             disabled={isDisabled}
             style={
               !isDisabled
-                ? { backgroundColor: "#60b84b", color: "white" }
+                ? { backgroundColor: '#60b84b', color: 'white' }
                 : null
             }
           >
-            {isEditPollMode ? "Update Quiz" : "Create Quiz"}
+            {isEditPollMode ? 'Update Quiz' : 'Create Quiz'}
           </button>
         </div>
       </Modal>
