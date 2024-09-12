@@ -4,24 +4,24 @@ import {
   useLocation,
   Link,
   useNavigate,
-} from "react-router-dom";
-import { useState, useEffect } from "react";
-import { getQuizAPI } from "../../services/homePage.service";
-import useAxiosLoader from "../../hooks/useAxiosLoader";
-import Dashboard from "./dashboard";
-import Analytics from "./analytics";
-import QuestionWiseAnalysis from "./analytics/question-wise-analysis";
-import CreateQuiz from "./create-quiz";
-import Loader from "../common/Loader";
+} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getQuizAPI } from '../../services/services.api.quizs';
+import useAxiosLoader from '../../hooks/useAxiosLoader';
+import Dashboard from './dashboard';
+import Analytics from './analytics';
+import QuestionWiseAnalysis from './analytics/question-wise-analysis';
+import CreateQuiz from './create-quiz';
+import Loader from '../common/Loader';
 
-import "./index.css";
+import './index.css';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const isLoading = useAxiosLoader();
   const location = useLocation();
   const [refresh, setRefresh] = useState(false);
-  const [selectedQuiz, setSelectedQuiz] = useState("");
+  const [selectedQuiz, setSelectedQuiz] = useState('');
   const [quizs, setQuiz] = useState([]);
   const [otherQuizDatas, setOtherQuizDatas] = useState({
     totalQuizs: 0,
@@ -35,7 +35,7 @@ export default function HomePage() {
 
     const fetchQuizData = async () => {
       let response = [];
-      if (location.pathname == "/home-page/analytics") {
+      if (location.pathname == '/home-page/analytics') {
         response = await getQuizAPI();
       } else {
         response = await getQuizAPI(params);
@@ -53,7 +53,7 @@ export default function HomePage() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/log-in");
+    navigate('/log-in');
   };
 
   return (
@@ -65,28 +65,28 @@ export default function HomePage() {
           <div className='left-menus'>
             <div id='heading'>QUIZZIE</div>
             <div className='menus'>
-              <Link to={"/home-page/dashboard"}>
+              <Link to={'/home-page/dashboard'}>
                 <div
                   style={{
                     boxShadow: `${
-                      location.pathname == "/home-page/" ||
-                      location.pathname == "/home-page/dashboard"
-                        ? "2px 2px 20px 3px #0000001f"
-                        : "none"
+                      location.pathname == '/home-page/' ||
+                      location.pathname == '/home-page/dashboard'
+                        ? '2px 2px 20px 3px #0000001f'
+                        : 'none'
                     }`,
                   }}
                 >
                   Dashboard
                 </div>
               </Link>
-              <Link to={"/home-page/analytics"}>
+              <Link to={'/home-page/analytics'}>
                 <div
                   style={{
                     boxShadow: `${
-                      location.pathname == "/home-page/analytics" ||
-                      location.pathname == "/home-page/question-wise-analysis"
-                        ? "2px 2px 20px 3px #0000001f"
-                        : "none"
+                      location.pathname == '/home-page/analytics' ||
+                      location.pathname == '/home-page/question-wise-analysis'
+                        ? '2px 2px 20px 3px #0000001f'
+                        : 'none'
                     }`,
                   }}
                 >
@@ -97,9 +97,9 @@ export default function HomePage() {
                 onClick={() => setOpenCreateQuizTypeModal(true)}
                 style={{
                   boxShadow: `${
-                    location.pathname == "/home-page/create-quiz"
-                      ? "2px 2px 20px 3px #0000001f"
-                      : "none"
+                    location.pathname == '/home-page/create-quiz'
+                      ? '2px 2px 20px 3px #0000001f'
+                      : 'none'
                   }`,
                 }}
               >
