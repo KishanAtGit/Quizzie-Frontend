@@ -1,8 +1,7 @@
 import apiClient from '../axios.config';
 
-const userId = localStorage.getItem('userId');
-
 export const getQuizAPI = async params => {
+  const userId = localStorage.getItem('userId');
   try {
     const response = await apiClient.get(`/quiz/${userId}`, {
       params: params ? params : {},
@@ -15,6 +14,8 @@ export const getQuizAPI = async params => {
 };
 
 export const createQuizAPI = async QuizData => {
+  const userId = localStorage.getItem('userId');
+
   const formatDate = date => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = date.toLocaleString('en-US', { month: 'short' });
