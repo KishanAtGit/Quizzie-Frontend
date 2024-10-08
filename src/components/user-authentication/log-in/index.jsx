@@ -1,35 +1,36 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../services/services.api.user";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../../services/services.api.user';
+import { toast } from 'react-toastify';
 
 export default function LogIn() {
   const navigate = useNavigate();
 
   const [logInData, setLogInData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   let isValid = true;
   const validate = () => {
     isValid = true;
     const newErrors = {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     };
 
-    if (logInData.email === "") {
-      newErrors.email = "Please provide Email";
+    if (logInData.email === '') {
+      newErrors.email = 'Please provide Email';
       isValid = false;
     }
 
-    if (logInData.password === "") {
-      newErrors.password = "Please provide password";
+    if (logInData.password === '') {
+      newErrors.password = 'Please provide password';
       isValid = false;
     }
 
@@ -44,13 +45,14 @@ export default function LogIn() {
     const result = await loginUser(logInData);
 
     if (result.status === 202) {
-      localStorage.setItem("token", result.data.token);
-      localStorage.setItem("userId", result.data.userId);
-      navigate("/home-page/dashboard");
+      localStorage.setItem('token', result.data.token);
+      localStorage.setItem('userId', result.data.userId);
+      navigate('/home-page/dashboard');
+      toast.success('Login Successful');
     } else if (result.status === 400) {
       setErrors({
-        email: "Wrong email or password",
-        password: "Wrong email or password",
+        email: 'Wrong email or password',
+        password: 'Wrong email or password',
       });
     }
   };
@@ -77,21 +79,21 @@ export default function LogIn() {
               value={errors.email || logInData.email}
               onChange={handleChange}
               style={{
-                color: errors.email ? "#D60000" : "#474444",
-                border: errors.email ? "1px solid #D60000" : "none",
+                color: errors.email ? '#D60000' : '#474444',
+                border: errors.email ? '1px solid #D60000' : 'none',
               }}
-              onClick={() => setErrors(prev => ({ ...prev, email: "" }))}
+              onClick={() => setErrors(prev => ({ ...prev, email: '' }))}
             />
             <input
-              type={errors.password ? "text" : "password"}
+              type={errors.password ? 'text' : 'password'}
               id='password'
               value={errors.password || logInData.password}
               onChange={handleChange}
               style={{
-                color: errors.password ? "#D60000" : "#474444",
-                border: errors.password ? "1px solid #D60000" : "none",
+                color: errors.password ? '#D60000' : '#474444',
+                border: errors.password ? '1px solid #D60000' : 'none',
               }}
-              onClick={() => setErrors(prev => ({ ...prev, password: "" }))}
+              onClick={() => setErrors(prev => ({ ...prev, password: '' }))}
             />
           </div>
         </div>
